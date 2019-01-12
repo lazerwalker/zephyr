@@ -17,7 +17,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "convert": "for i in public/cinemagraphs/*.mov; do echo \"$i\" && ffmpeg -i \"$i\" \"${i%.*}.webm\" -f webm -c:v libvpx -b:v 1M -an -hide_banner; done"
+    "convert-mp4": "for i in ../video/*.mov; do f=`basename $i .mov`; ffmpeg -i $i -an \"public/cinemagraphs/$f.mp4\" -map_metadata -1 -qscale 0; done",
+    "convert-webm": "for i in ../video/*.mov; do f=`basename $i .mov`; ffmpeg -i $i -an \"public/cinemagraphs/$f.webm\" -map_metadata -1 -f webm -c:v libvpx -b:v 1M -hide_banner; done",
+    "convert": "yarn convert-mp4 && yarn convert-webm"
   },
   "eslintConfig": {
     "extends": "react-app"
