@@ -10,6 +10,8 @@ export default class Cinemagraph extends React.Component<Props> {
   private audioRef = React.createRef<HTMLAudioElement>()
   private bgAudioRef = React.createRef<HTMLAudioElement>()
 
+  private lastPauseTime = new Date()
+
   componentDidMount() {
     if (!this.audioRef.current) { return }
     console.log("Mounted!")
@@ -21,12 +23,17 @@ export default class Cinemagraph extends React.Component<Props> {
   public playIfNotPlaying() {
     if (!this.audioRef.current) { return }
     if (!this.audioRef.current.paused) return
-    this.audioRef.current.load()
+
+    const timeDiff = new Date().getTime() - this.lastPauseTime.getTime()
+    if (timeDiff > 5000) {
+      this.audioRef.current.load()
+    }
     this.audioRef.current.play()
   }
 
   public pause() {
     if (!this.audioRef.current) { return }
+    this.lastPauseTime = new Date()
     this.audioRef.current.pause()
   }
 
