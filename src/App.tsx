@@ -8,6 +8,8 @@ interface State {
 }
 
 class App extends Component<{}, State> {
+  private playerRef = React.createRef<Cinemagraph>()
+
   videos = [
     "bed",
     "shower",
@@ -29,19 +31,26 @@ class App extends Component<{}, State> {
   render() {
     return (
       <div className="App" >
-        <Cinemagraph file={this.videos[this.state.index]} />
+        <Cinemagraph
+          file={this.videos[this.state.index]}
+          ref={this.playerRef}
+          onComplete={this.onComplete} />
       </div>
     );
   }
 
   onKeyDown = (e: Event) => {
-    const index = (this.state.index >= this.videos.length ? 0 : this.state.index + 1)
-    console.log("Changin index", index)
-    this.setState({ index })
+    this.playerRef.current!.play()
   }
 
   onKeyUp = (e: Event) => {
-    console.log(e)
+    this.playerRef.current!.pause()
+  }
+
+  onComplete = () => {
+    const index = (this.state.index >= this.videos.length ? 0 : this.state.index + 1)
+    console.log("Changin index", index)
+    this.setState({ index })
   }
 }
 
