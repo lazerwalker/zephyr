@@ -2,6 +2,7 @@ import React, { Component, SyntheticEvent } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Cinemagraph from './components/Cinemagraph';
+import KeyIndicator from './components/KeyIndicator';
 
 interface State {
   index: number,
@@ -46,21 +47,21 @@ class App extends Component<{}, State> {
     }
   }
 
-  shouldComponentUpdate(_: any, nextState: State) {
-    return nextState.index != this.state.index
-  }
-
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown)
   }
 
   render() {
+    const video = this.videos[this.state.index]
+    const key = video.keypresses[this.state.keypressIndex]
+
     return (
       <div className="App" >
         <Cinemagraph
-          file={this.videos[this.state.index].name}
+          file={video.name}
           ref={this.playerRef}
           onComplete={this.onComplete} />
+        <KeyIndicator keyName={key} />
       </div>
     );
   }
