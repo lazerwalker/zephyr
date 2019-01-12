@@ -4,53 +4,95 @@ import './App.css';
 import Cinemagraph from './components/Cinemagraph';
 
 interface State {
-  index: number
+  index: number,
+  keypressIndex: number;
+  keyTimeout: number
+}
+
+interface Video {
+  name: string
+  keypresses: string[]
 }
 
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
+  private timeoutId: number | undefined
 
-  videos = [
-    "bed",
-    "shower",
-    "bike",
-    "ubahn"
+  videos: Video[] = [
+    {
+      name: "bed",
+      keypresses: ["ArrowUp"],
+    },
+    {
+      name: "shower",
+      keypresses: ["ArrowDown"]
+    },
+    {
+      name: "bike",
+      keypresses: ["ArrowUp", "ArrowDown"]
+    },
+    {
+      name: "ubahn",
+      keypresses: ["ArrowLeft", "ArrowRight"]
+    }
   ]
 
   constructor(props: any) {
     super(props)
-    this.state = { index: 0 }
+    this.state = {
+      index: 0,
+      keypressIndex: 0,
+      keyTimeout: 1000
+    }
   }
 
+  shouldComponentUpdate(_: any, nextState: State) {
+    return nextState.index != this.state.index
+  }
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown)
-    window.addEventListener('keyup', this.onKeyUp)
   }
 
   render() {
     return (
       <div className="App" >
         <Cinemagraph
-          file={this.videos[this.state.index]}
+          file={this.videos[this.state.index].name}
           ref={this.playerRef}
           onComplete={this.onComplete} />
       </div>
     );
   }
 
-  onKeyDown = (e: Event) => {
-    this.playerRef.current!.play()
+  onKeyDown = (e: KeyboardEvent) => {
+    clearTimeout(this.timeoutId)
+
+    if (!this.playerRef.current) { return }
+    const video = this.videos[this.state.index]
+
+    if (e.key === video.keypresses[this.state.keypressIndex]) {
+      this.playerRef.current.playIfNotPlaying()
+
+      const keypressIndex = (this.state.keypressIndex >= video.keypresses.length - 1 ? 0 : this.state.keypressIndex + 1)
+      this.setState({ keypressIndex })
+
+      // The explicit window is to shut up the TS compiler, which grabs the Node version, because CRA requires @types/node to be installed
+      this.timeoutId = window.setTimeout(this.stopAudio, this.state.keyTimeout)
+    } else {
+      this.playerRef.current.pause()
+      this.setState({ keypressIndex: 0 })
+    }
   }
 
-  onKeyUp = (e: Event) => {
-    this.playerRef.current!.pause()
+  stopAudio = () => {
+    if (!this.playerRef.current) { return }
+    this.playerRef.current.pause()
   }
 
   onComplete = () => {
-    const index = (this.state.index >= this.videos.length ? 0 : this.state.index + 1)
-    console.log("Changin index", index)
-    this.setState({ index })
+    const index = (this.state.index >= this.videos.length - 1 ? 0 : this.state.index + 1)
+    this.setState({ index, keypressIndex: 0 })
   }
 }
 

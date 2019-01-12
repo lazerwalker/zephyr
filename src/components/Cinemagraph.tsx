@@ -18,7 +18,7 @@ export default class Cinemagraph extends React.Component<Props> {
     })
   }
 
-  public play() {
+  public playIfNotPlaying() {
     if (!this.audioRef.current) { return }
     if (!this.audioRef.current.paused) return
     this.audioRef.current.load()
