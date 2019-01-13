@@ -49,6 +49,7 @@ class App extends Component<{}, State> {
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeyDown)
+    window.addEventListener('touchstart', this.onTouchStart)
   }
 
   render() {
@@ -84,6 +85,21 @@ class App extends Component<{}, State> {
       this.playerRef.current.pause()
       this.setState({ keypressIndex: 0 })
     }
+  }
+
+  onTouchStart = (e: TouchEvent) => {
+    clearTimeout(this.timeoutId)
+
+    if (!this.playerRef.current) { return }
+    const video = this.videos[this.state.index]
+
+    this.playerRef.current.playIfNotPlaying()
+
+    const keypressIndex = (this.state.keypressIndex >= video.keypresses.length - 1 ? 0 : this.state.keypressIndex + 1)
+    this.setState({ keypressIndex })
+
+    // The explicit window is to shut up the TS compiler, which grabs the Node version, because CRA requires @types/node to be installed
+    this.timeoutId = window.setTimeout(this.stopAudio, this.state.keyTimeout)
   }
 
   stopAudio = () => {
