@@ -60,7 +60,7 @@ export default class Cinemagraph extends React.Component<Props> {
           <source src={`cinemagraphs/${this.props.file}.mp4`} type="video/mp4" />
         </video>
 
-        <audio autoPlay loop ref={this.bgAudioRef}>
+        <audio loop ref={this.bgAudioRef}>
           <source src={`bgaudio/${this.props.file}.mp3`} type="audio/mp3" />
         </audio>
 
