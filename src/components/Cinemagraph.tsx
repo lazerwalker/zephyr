@@ -54,7 +54,7 @@ export default class Cinemagraph extends React.Component<Props> {
     }
 
     return (
-      <div>
+      <div className='video-wrapper'>
         <video className='cinemagraph' autoPlay loop muted playsInline ref={this.videoRef}>
           <source src={`cinemagraphs/${this.props.file}.webm`} type="video/webm" />
           <source src={`cinemagraphs/${this.props.file}.mp4`} type="video/mp4" />
