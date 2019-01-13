@@ -18,6 +18,7 @@ interface Video {
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
   private timeoutId: number | undefined
+  private isComplete = false
 
   videos: Video[] = [
     {
@@ -70,44 +71,25 @@ class App extends Component<{}, State> {
           file={video.name}
           ref={this.playerRef}
           onComplete={this.onComplete} />
-        <KeyIndicator keyName={key} />
+        {/* <KeyIndicator keyName={key} /> */}
       </div>
     );
   }
 
   onKeyDown = (e: KeyboardEvent) => {
-    clearTimeout(this.timeoutId)
-
-    if (!this.playerRef.current) { return }
-    const video = this.videos[this.state.index]
-
-    if (e.key === video.keypresses[this.state.keypressIndex]) {
-      this.playerRef.current.playIfNotPlaying()
-
-      const keypressIndex = (this.state.keypressIndex >= video.keypresses.length - 1 ? 0 : this.state.keypressIndex + 1)
-      this.setState({ keypressIndex })
-
-      // The explicit window is to shut up the TS compiler, which grabs the Node version, because CRA requires @types/node to be installed
-      this.timeoutId = window.setTimeout(this.stopAudio, this.state.keyTimeout)
+    if (this.isComplete) {
+      this.next()
     } else {
-      this.playerRef.current.pause()
-      this.setState({ keypressIndex: 0 })
+      this.playerRef.current!.playIfNotPlaying()
     }
   }
 
   onTouchStart = (e: TouchEvent) => {
-    clearTimeout(this.timeoutId)
-
-    if (!this.playerRef.current) { return }
-    const video = this.videos[this.state.index]
-
-    this.playerRef.current.playIfNotPlaying()
-
-    const keypressIndex = (this.state.keypressIndex >= video.keypresses.length - 1 ? 0 : this.state.keypressIndex + 1)
-    this.setState({ keypressIndex })
-
-    // The explicit window is to shut up the TS compiler, which grabs the Node version, because CRA requires @types/node to be installed
-    this.timeoutId = window.setTimeout(this.stopAudio, this.state.keyTimeout)
+    if (this.isComplete) {
+      this.next()
+    } else {
+      this.playerRef.current!.playIfNotPlaying()
+    }
   }
 
   stopAudio = () => {
@@ -116,8 +98,14 @@ class App extends Component<{}, State> {
   }
 
   onComplete = () => {
+    this.isComplete = true
+  }
+
+  next() {
     const index = (this.state.index >= this.videos.length - 1 ? 0 : this.state.index + 1)
     this.setState({ index, keypressIndex: 0 })
+    this.isComplete = false
+    setTimeout(() => { this.playerRef.current!.playIfNotPlaying() }, 0)
   }
 }
 
