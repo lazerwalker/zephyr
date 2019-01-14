@@ -30,13 +30,53 @@ class App extends Component<{}, State> {
       keypresses: ["ArrowDown"]
     },
     {
-      name: "bike",
-      keypresses: ["ArrowUp", "ArrowDown"]
+      name: "street",
     },
     {
-      name: "ubahn",
-      keypresses: ["ArrowLeft", "ArrowRight"]
-    }
+      name: "parks",
+    },
+    {
+      name: "drugdealers",
+    },
+    {
+      name: "turkey",
+    },
+    {
+      name: "keepwalking",
+    },
+    {
+      name: "dolores",
+    },
+    {
+      name: "urethra",
+    },
+    {
+      name: "google",
+    },
+    {
+      name: "fork",
+    },
+    {
+      name: "slide",
+    },
+    {
+      name: "up",
+    },
+    {
+      name: "stumble",
+    },
+    {
+      name: "run",
+    },
+    {
+      name: "canal",
+    },
+    {
+      name: "across",
+    },
+    {
+      name: "slidetop",
+    },
   ]
 
   constructor(props: any) {
@@ -63,7 +103,6 @@ class App extends Component<{}, State> {
 
   render() {
     const video = this.videos[this.state.index]
-    const key = video.keypresses[this.state.keypressIndex]
 
     return (
       <div className="App" >
@@ -71,7 +110,6 @@ class App extends Component<{}, State> {
           file={video.name}
           ref={this.playerRef}
           onComplete={this.onComplete} />
-        {/* <KeyIndicator keyName={key} /> */}
       </div>
     );
   }
