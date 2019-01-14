@@ -12,7 +12,7 @@ interface State {
 
 interface Video {
   name: string
-  keypresses: string[]
+  keypresses?: string[]
 }
 
 class App extends Component<{}, State> {

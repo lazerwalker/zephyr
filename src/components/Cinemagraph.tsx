@@ -49,16 +49,30 @@ export default class Cinemagraph extends React.Component<Props> {
       this.audioRef.current.load()
     }
 
+    // Todo: Treating `render` as such a state-influencing event is liable to bite me in the ass
     if (this.bgAudioRef.current) {
-      this.bgAudioRef.current.load()
+      let actx = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const src = `bgaudio/${this.props.file}.mp3`
+      let audioData: any, srcNode: AudioBufferSourceNode;  // global so we can access them from handlers
 
-      const AudioContext = window.AudioContext;
-      const audioCtx = new AudioContext();
-      const audioElement = this.bgAudioRef.current
-      const track = audioCtx.createMediaElementSource(audioElement);
-      track.connect(audioCtx.destination);
+      const decode = (buffer: any) => {
+        console.log("Decoding)")
+        actx.decodeAudioData(buffer, playLoop);
+      }
 
-      audioElement.play();
+      console.log("Context?", actx)
+      fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
+
+      // Sets up a new source node as needed as stopping will render current invalid
+      const playLoop = (abuffer: any) => {
+        console.log("Playing")
+        if (!audioData) audioData = abuffer;  // create a reference for control buttons
+        srcNode = actx.createBufferSource();  // create audio source
+        srcNode.buffer = abuffer;             // use decoded buffer
+        srcNode.connect(actx.destination);    // create output
+        srcNode.loop = true;                  // takes care of perfect looping
+        srcNode.start();                      // play...
+      }
     }
 
     return (
