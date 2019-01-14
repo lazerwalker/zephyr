@@ -51,6 +51,14 @@ export default class Cinemagraph extends React.Component<Props> {
 
     if (this.bgAudioRef.current) {
       this.bgAudioRef.current.load()
+
+      const AudioContext = window.AudioContext;
+      const audioCtx = new AudioContext();
+      const audioElement = this.bgAudioRef.current
+      const track = audioCtx.createMediaElementSource(audioElement);
+      track.connect(audioCtx.destination);
+
+      audioElement.play();
     }
 
     return (

@@ -34,6 +34,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/webaudioapi": "^0.0.27",
     "gh-pages": "^2.0.1"
   }
 }
