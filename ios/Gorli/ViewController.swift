@@ -26,9 +26,8 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 
         view = webView
 
-        let url = URL(string: "http://ono-sendai.local:3000")
-        let request = URLRequest(url: url!)
-        webView.load(request)
+        let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "build")!
+        webView.loadFileURL(url, allowingReadAccessTo: url)
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
