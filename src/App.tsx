@@ -39,8 +39,8 @@ class App extends Component<{}, State> {
     {
       name: "shower",
       keypresses: ["ArrowDown"],
-      playCoord: { x: 80, y: 90 },
-      nextCoord: { x: 0, y: 0 }
+      playCoord: { x: 40, y: 70 },
+      nextCoord: { x: 70, y: 50 }
 
     },
     {
@@ -104,9 +104,6 @@ class App extends Component<{}, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown)
-    window.addEventListener('touchstart', this.onTouchStart)
-
     // Mobile viewport sizing hack from https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
     function resizeViewport() {
       const vh = window.innerHeight * 0.01;
@@ -122,15 +119,23 @@ class App extends Component<{}, State> {
 
     let next;
     if (this.state.playState === PlayState.NotStarted) {
-      next = <div id='next' style={{
-        left: `${video.playCoord!.x}%`,
-        top: `${video.playCoord!.y}%`,
-      }} />
+      next = <div id='next-wrapper'
+        onClick={this.clickedTouchPoint}
+        style={{
+          left: `${video.playCoord!.x}%`,
+          top: `${video.playCoord!.y}%`,
+        }}>
+        <div id='next' />
+      </div>
     } else if (this.state.playState === PlayState.Complete) {
-      next = <div id='next' style={{
-        left: `${video.nextCoord!.x}%`,
-        top: `${video.nextCoord!.y}%`,
-      }} />
+      next = <div id='next-wrapper'
+        onClick={this.clickedTouchPoint}
+        style={{
+          left: `${video.nextCoord!.x}%`,
+          top: `${video.nextCoord!.y}%`,
+        }}>
+        <div id='next' />
+      </div>
     }
 
     return (
@@ -157,6 +162,16 @@ class App extends Component<{}, State> {
   }
 
   onTouchStart = (e: TouchEvent) => {
+    if (this.state.playState === PlayState.Complete) {
+      this.next()
+    } else if (this.state.playState === PlayState.NotStarted) {
+      this.playerRef.current!.playIfNotPlaying()
+      this.setState({ playState: PlayState.Playing })
+    }
+  }
+
+  clickedTouchPoint = () => {
+    // TODO: Remove touch delay on mobile
     if (this.state.playState === PlayState.Complete) {
       this.next()
     } else if (this.state.playState === PlayState.NotStarted) {

@@ -21,13 +21,23 @@ html {
   height: calc(var(--vh, 1vh) * 100);
 }
 
+#next-wrapper {
+  position: absolute;
+  margin-left: -80px;
+  margin-top: -80px;
+  height: 160px;
+  width: 160px;
+}
+
 #next {
   animation: pulsate-tap-point 4s infinite both ease-in-out;
   border-radius: 10px;
   background-color: white;
-  position: absolute;
-  width: 10px;
   height: 10px;
+  left: 50%;
+  position: relative;
+  top: 50%;
+  width: 10px;
 }
 
 @keyframes pulsate-tap-point {
@@ -37,6 +47,6 @@ html {
   }
 
   50% {
-    box-shadow: 0px 0px 60px 80px white;
+    box-shadow: 0px 0px 80px 80px white;
   }
 }
