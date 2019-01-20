@@ -3,31 +3,45 @@ import logo from './logo.svg';
 import './App.css';
 import Cinemagraph from './components/Cinemagraph';
 import KeyIndicator from './components/KeyIndicator';
+import { isAbsolute } from 'path';
+
+enum PlayState {
+  NotStarted = 0,
+  Playing = 1,
+  Complete = 2
+}
 
 interface State {
-  index: number,
-  keypressIndex: number;
+  index: number
+  keypressIndex: number
   keyTimeout: number
+  playState: PlayState
 }
 
 interface Video {
   name: string
   keypresses?: string[]
+  playCoord?: { x: number, y: number }
+  nextCoord?: { x: number, y: number }
 }
 
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
   private timeoutId: number | undefined
-  private isComplete = false
 
   videos: Video[] = [
     {
       name: "bed",
       keypresses: ["ArrowUp"],
+      playCoord: { x: 20, y: 60 },
+      nextCoord: { x: 70, y: 60 }
     },
     {
       name: "shower",
-      keypresses: ["ArrowDown"]
+      keypresses: ["ArrowDown"],
+      playCoord: { x: 80, y: 90 },
+      nextCoord: { x: 0, y: 0 }
+
     },
     {
       name: "street",
@@ -84,7 +98,8 @@ class App extends Component<{}, State> {
     this.state = {
       index: 0,
       keypressIndex: 0,
-      keyTimeout: 1000
+      keyTimeout: 1000,
+      playState: PlayState.NotStarted
     }
   }
 
@@ -102,31 +117,51 @@ class App extends Component<{}, State> {
   }
 
   render() {
+    console.log("Re-rendering")
     const video = this.videos[this.state.index]
+
+    let next;
+    if (this.state.playState === PlayState.NotStarted) {
+      next = <div id='next' style={{
+        left: `${video.playCoord!.x}%`,
+        top: `${video.playCoord!.y}%`,
+      }} />
+    } else if (this.state.playState === PlayState.Complete) {
+      next = <div id='next' style={{
+        left: `${video.nextCoord!.x}%`,
+        top: `${video.nextCoord!.y}%`,
+      }} />
+    }
 
     return (
       <div className="App" >
-        <Cinemagraph
-          file={video.name}
-          ref={this.playerRef}
-          onComplete={this.onComplete} />
-      </div>
+        <div className="video-wrapper">
+          <Cinemagraph
+            file={video.name}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          {next}
+        </div>
+      </div >
     );
   }
 
   onKeyDown = (e: KeyboardEvent) => {
-    if (this.isComplete) {
+    if (this.state.playState === PlayState.Complete) {
       this.next()
-    } else {
+    } else if (this.state.playState === PlayState.NotStarted) {
       this.playerRef.current!.playIfNotPlaying()
+      this.setState({ playState: PlayState.Playing })
     }
   }
 
   onTouchStart = (e: TouchEvent) => {
-    if (this.isComplete) {
+    if (this.state.playState === PlayState.Complete) {
       this.next()
-    } else {
+    } else if (this.state.playState === PlayState.NotStarted) {
       this.playerRef.current!.playIfNotPlaying()
+      this.setState({ playState: PlayState.Playing })
     }
   }
 
@@ -136,13 +171,13 @@ class App extends Component<{}, State> {
   }
 
   onComplete = () => {
-    this.isComplete = true
+    console.log("Is complete!")
+    this.setState({ playState: PlayState.Complete })
   }
 
   next() {
     const index = (this.state.index >= this.videos.length - 1 ? 0 : this.state.index + 1)
-    this.setState({ index, keypressIndex: 0 })
-    this.isComplete = false
+    this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
     setTimeout(() => { this.playerRef.current!.playIfNotPlaying() }, 0)
   }
 }
