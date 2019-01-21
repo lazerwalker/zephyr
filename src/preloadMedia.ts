@@ -1,17 +1,15 @@
 interface VideoSource {
-  name: string
-  webm: string
-  mp4: string
-  dialog: string
   bgaudio: string
+  dialog: string
+  name: string
+  video: string
 }
 
 export interface CacheEntry {
-  name: string
-  webm: string
-  mp4: string
-  dialog: string
   bgaudio: string
+  dialog: string
+  name: string
+  video: string
 }
 
 export default function preloadMedia(names: string[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
@@ -27,13 +25,17 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
     })
   }
 
+  const videoEl = document.createElement('video')
+  const supportsWebm = (videoEl.canPlayType('video/webm') != '')
+  const videoExtension = (supportsWebm ? "webm" : "mp4")
+  console.log(videoExtension)
+
   let sources: VideoSource[] = names.map((n) => {
     return {
-      name: n,
       bgaudio: `bgaudio/${n}.mp3`,
       dialog: `dialog/${n}.mp3`,
-      webm: `cinemagraphs/${n}.webm`,
-      mp4: `cinemagraphs/${n}.mp4`
+      name: n,
+      video: `cinemagraphs/${n}.${videoExtension}`
     }
   })
 
@@ -44,14 +46,13 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
   }
 
   let promises: Promise<CacheEntry>[] = sources.map(source => {
-    const sources = [source.bgaudio, source.dialog, source.mp4, source.webm]
+    const sources = [source.bgaudio, source.dialog, source.video]
     return Promise.all(sources.map(fetchURL)).then(results => {
       return {
-        name: source.name,
         bgaudio: results[0],
         dialog: results[1],
-        mp4: results[2],
-        webm: results[3]
+        name: source.name,
+        video: results[2]
       }
     })
   })

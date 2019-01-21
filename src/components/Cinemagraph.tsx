@@ -48,9 +48,8 @@ export default class Cinemagraph extends React.Component<Props> {
     console.log("Loiading video", media.name)
     this.setState({ media })
 
-    // TODO: Webm vs mov
     if (this.videoRef.current) {
-      this.videoRef.current.src = media.webm
+      this.videoRef.current.src = media.video
       this.videoRef.current.load()
     }
 
