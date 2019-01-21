@@ -4,6 +4,7 @@ import './App.css';
 import Cinemagraph from './components/Cinemagraph';
 import KeyIndicator from './components/KeyIndicator';
 import { isAbsolute } from 'path';
+import preloadMedia, { CacheEntry } from './preloadMedia';
 
 enum PlayState {
   NotStarted = 0,
@@ -16,6 +17,7 @@ interface State {
   keypressIndex: number
   keyTimeout: number
   playState: PlayState
+  loaded: boolean
 }
 
 interface Video {
@@ -28,6 +30,7 @@ interface Video {
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
   private timeoutId: number | undefined
+  private cache: { [name: string]: CacheEntry } = {}
 
   videos: Video[] = [
     {
@@ -99,7 +102,8 @@ class App extends Component<{}, State> {
       index: 0,
       keypressIndex: 0,
       keyTimeout: 1000,
-      playState: PlayState.NotStarted
+      playState: PlayState.NotStarted,
+      loaded: false
     }
   }
 
@@ -111,10 +115,32 @@ class App extends Component<{}, State> {
     }
     window.addEventListener('resize', resizeViewport)
     resizeViewport()
+
+    preloadMedia(this.videos.map(v => v.name)).then(cache => {
+      this.cache = cache
+      this.setState({ loaded: true })
+
+
+      const video = this.videos[0]
+      const media = this.cache[video.name]
+      // TODO
+      setTimeout(() => {
+        this.playerRef.current!.loadVideo(media)
+      }, 100)
+    })
   }
 
   render() {
     console.log("Re-rendering")
+
+    if (!this.state.loaded) {
+      return (
+        <div className="App" >
+          <div>Loading!</div>
+        </div>
+      )
+    }
+
     const video = this.videos[this.state.index]
 
     let next;
@@ -142,7 +168,7 @@ class App extends Component<{}, State> {
       <div className="App" >
         <div className="video-wrapper">
           <Cinemagraph
-            file={video.name}
+            media={this.cache[video.name]}
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
@@ -193,7 +219,17 @@ class App extends Component<{}, State> {
   next() {
     const index = (this.state.index >= this.videos.length - 1 ? 0 : this.state.index + 1)
     this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
-    setTimeout(() => { this.playerRef.current!.playIfNotPlaying() }, 0)
+
+    const video = this.videos[index]
+    const media = this.cache[video.name]
+
+    // TODO: The 100ms delay is necessay, but shouldn't be!
+    setTimeout(() => {
+      if (!this.playerRef.current) {
+        return
+      }
+      this.playerRef.current.loadVideo(media)
+    }, 10)
   }
 }
 
