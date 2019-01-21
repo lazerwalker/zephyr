@@ -18,6 +18,7 @@ interface State {
   keyTimeout: number
   playState: PlayState
   loaded: boolean
+  loadingProgress: number
 }
 
 interface Video {
@@ -29,7 +30,8 @@ interface Video {
 
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
-  private timeoutId: number | undefined
+  private progressBarRef = React.createRef<HTMLProgressElement>()
+
   private cache: { [name: string]: CacheEntry } = {}
 
   videos: Video[] = [
@@ -103,7 +105,8 @@ class App extends Component<{}, State> {
       keypressIndex: 0,
       keyTimeout: 1000,
       playState: PlayState.NotStarted,
-      loaded: false
+      loaded: false,
+      loadingProgress: 0
     }
   }
 
@@ -116,14 +119,16 @@ class App extends Component<{}, State> {
     window.addEventListener('resize', resizeViewport)
     resizeViewport()
 
-    preloadMedia(this.videos.map(v => v.name)).then(cache => {
+    preloadMedia(this.videos.map(v => v.name), (percent) => {
+      if (this.progressBarRef.current) {
+        this.progressBarRef.current.value = percent
+      }
+    }).then(cache => {
       this.cache = cache
       this.setState({ loaded: true })
 
-
       const video = this.videos[0]
       const media = this.cache[video.name]
-      // TODO
       setTimeout(() => {
         this.playerRef.current!.loadVideo(media)
       }, 100)
@@ -136,7 +141,10 @@ class App extends Component<{}, State> {
     if (!this.state.loaded) {
       return (
         <div className="App" >
-          <div>Loading!</div>
+          <div className="video-wrapper">
+            <div>Loading!</div>
+            <progress ref={this.progressBarRef} value={this.state.loadingProgress} max="100" />
+          </div>
         </div>
       )
     }

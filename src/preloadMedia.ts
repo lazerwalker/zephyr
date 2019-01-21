@@ -14,7 +14,19 @@ export interface CacheEntry {
   bgaudio: string
 }
 
-export default function preloadMedia(names: string[]): Promise<{ [name: string]: CacheEntry }> {
+export default function preloadMedia(names: string[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
+  // TODO: This can be more granular than just tracking each level of the game 
+  let completedCount = 0
+  let totalCount = names.length
+  function wrapPromise<T>(promise: Promise<T>): Promise<T> {
+    return promise.then(foo => {
+      completedCount += 1
+      const percent = Math.floor((completedCount / totalCount) * 100)
+      onProgressUpdate(percent)
+      return foo
+    })
+  }
+
   let sources: VideoSource[] = names.map((n) => {
     return {
       name: n,
@@ -44,7 +56,7 @@ export default function preloadMedia(names: string[]): Promise<{ [name: string]:
     })
   })
 
-  return Promise.all(promises).then(entries => {
+  return Promise.all(promises.map(wrapPromise)).then(entries => {
     let map: { [name: string]: CacheEntry } = {}
     entries.forEach(e => {
       map[e.name] = e
