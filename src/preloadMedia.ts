@@ -28,7 +28,6 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
   const videoEl = document.createElement('video')
   const supportsWebm = (videoEl.canPlayType('video/webm') != '')
   const videoExtension = (supportsWebm ? "webm" : "mp4")
-  console.log(videoExtension)
 
   let sources: VideoSource[] = names.map((n) => {
     return {
