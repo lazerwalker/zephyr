@@ -22,4 +22,11 @@ platform :ios do
     build_app(scheme: "Gorli")
     upload_to_app_store
   end
+
+  desc "Push a beta TestFlight build"
+  lane :beta do
+    sync_code_signing(type: "appstore")
+    build_app(scheme: "Gorli")
+    upload_to_testflight
+  end
 end
