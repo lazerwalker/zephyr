@@ -1,11 +1,12 @@
 package com.lazerwalker.gorli;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private WebView mWebView;
 
     @Override
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        mWebView.loadUrl("http://ono-sendai.local:3000");
+        mWebView.loadUrl("https://lazerwalker.com/gorli");
 
     }
 }
