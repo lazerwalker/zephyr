@@ -23,7 +23,6 @@ interface State {
 
 interface Video {
   name: string
-  keypresses?: string[]
   playCoord?: { x: number, y: number }
   nextCoord?: { x: number, y: number }
 }
@@ -37,13 +36,11 @@ class App extends Component<{}, State> {
   videos: Video[] = [
     {
       name: "bed",
-      keypresses: ["ArrowUp"],
       playCoord: { x: 20, y: 60 },
       nextCoord: { x: 70, y: 60 }
     },
     {
       name: "shower",
-      keypresses: ["ArrowDown"],
       playCoord: { x: 40, y: 70 },
       nextCoord: { x: 70, y: 50 }
 
