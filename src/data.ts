@@ -1,4 +1,20 @@
-export default [
+export interface Media {
+  name: string
+  playCoord?: { x: number, y: number }
+  nextCoord?: { x: number, y: number }
+  text?: string
+  textPos?: number;
+}
+
+const data: Media[] = [
+  {
+    name: "headphones",
+    nextCoord: {
+      x: 0, y: 0
+    },
+    text: "This experience requires sound.<br/>Headphones are recommended.",
+    textPos: 10
+  },
   {
     name: "bed",
     playCoord: {
@@ -66,3 +82,5 @@ export default [
     name: "slidetop",
   },
 ]
+
+export default data

@@ -20,12 +20,6 @@ interface State {
   loadingProgress: number
 }
 
-interface Video {
-  name: string
-  playCoord?: { x: number, y: number }
-  nextCoord?: { x: number, y: number }
-}
-
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
   private progressBarRef = React.createRef<HTMLProgressElement>()
@@ -85,25 +79,31 @@ class App extends Component<{}, State> {
 
     const video = Levels[this.state.index]
 
-    let next;
-    if (this.state.playState === PlayState.NotStarted) {
+    let next, text;
+    if (this.state.playState === PlayState.NotStarted && video.playCoord) {
       next = <div id='next-wrapper'
-        onClick={this.clickedTouchPoint}
+        onClick={this.clickedPlay}
         style={{
           left: `${video.playCoord!.x}%`,
           top: `${video.playCoord!.y}%`,
         }}>
         <div id='next' />
       </div>
-    } else if (this.state.playState === PlayState.Complete) {
+    } else if (this.state.playState !== PlayState.Playing) {
       next = <div id='next-wrapper'
-        onClick={this.clickedTouchPoint}
+        onClick={this.clickedNext}
         style={{
           left: `${video.nextCoord!.x}%`,
           top: `${video.nextCoord!.y}%`,
         }}>
         <div id='next' />
       </div>
+    }
+
+    if (video.text) {
+      text = <div className='text'
+        dangerouslySetInnerHTML={{ __html: video.text }}
+        style={{ top: `${video.textPos!}%` }} />
     }
 
     return (
@@ -114,6 +114,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
+          {text}
           {next}
         </div>
       </div >
@@ -138,14 +139,14 @@ class App extends Component<{}, State> {
     }
   }
 
-  clickedTouchPoint = () => {
-    // TODO: Remove touch delay on mobile
-    if (this.state.playState === PlayState.Complete) {
-      this.next()
-    } else if (this.state.playState === PlayState.NotStarted) {
-      this.playerRef.current!.playIfNotPlaying()
-      this.setState({ playState: PlayState.Playing })
-    }
+  clickedPlay = () => {
+    if (this.state.playState !== PlayState.NotStarted) { return }
+    this.playerRef.current!.playIfNotPlaying()
+    this.setState({ playState: PlayState.Playing })
+  }
+
+  clickedNext = () => {
+    this.next()
   }
 
   stopAudio = () => {
