@@ -1,8 +1,3 @@
-@font-face {
-  font-family: 'Gothenstone Free Personal';
-  src: local('Gothenstone Free Personal'), url(./fonts/Gothenstone.ttf) format('truetype');
-}
-
 html {
   background-color: #E4D8D2;
   -webkit-user-select: none;
