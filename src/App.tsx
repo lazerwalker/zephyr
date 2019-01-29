@@ -121,7 +121,6 @@ class App extends Component<{}, State> {
         return
       }
       this.playerRef.current.loadVideo(media)
-      this.playerRef.current!.playIfNotPlaying()
       this.setState({ playState: PlayState.Playing })
     }, 10)
   }

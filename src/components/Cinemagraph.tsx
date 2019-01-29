@@ -45,16 +45,25 @@ export default class Cinemagraph extends React.Component<Props> {
   }
 
   public loadVideo(media: CacheEntry) {
-    console.log("Loiading video", media.name)
+    console.log("Loading video", media.name)
     this.setState({ media })
 
-    if (this.videoRef.current) {
-      this.videoRef.current.src = media.video
-      this.videoRef.current.load()
+    if (this.videoRef.current && media) {
+      if (media.video) {
+        this.videoRef.current.src = media.video
+        this.videoRef.current.load()
+      } else {
+        this.videoRef.current.src = "broken"
+      }
     }
 
     if (this.audioRef.current) {
-      this.audioRef.current.src = media.dialog
+      if (media.dialog) {
+        this.audioRef.current.src = media.dialog
+        this.audioRef.current.load()
+      } else {
+        this.audioRef.current.src = "broken"
+      }
     }
 
     // Background audio
@@ -65,7 +74,9 @@ export default class Cinemagraph extends React.Component<Props> {
       this.ctx.decodeAudioData(buffer, playLoop)
     }
 
-    fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
+    if (src) {
+      fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
+    }
 
     // Sets up a new source node as needed as stopping will render current invalid
     const playLoop = (abuffer: any) => {

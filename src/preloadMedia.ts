@@ -6,10 +6,10 @@ interface VideoSource {
 }
 
 export interface CacheEntry {
-  bgaudio: string
-  dialog: string
   name: string
-  video: string
+  bgaudio: string | void
+  dialog: string | void
+  video: string | void
 }
 
 export default function preloadMedia(names: string[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
@@ -38,10 +38,11 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
     }
   })
 
-  function fetchURL(url: string): Promise<string> {
+  function fetchURL(url: string): Promise<string | void> {
     return fetch(url, { mode: "cors" })
       .then(r => r.blob())
       .then(URL.createObjectURL)
+      .catch(e => console.log(`Couldn't load ${url}, ${e}`))
   }
 
   let promises: Promise<CacheEntry>[] = sources.map(source => {
