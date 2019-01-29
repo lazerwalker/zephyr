@@ -12,6 +12,7 @@ export default class Cinemagraph extends React.Component<Props> {
   private bgAudioRef = React.createRef<HTMLAudioElement>()
 
   private ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+  private sourceNode = this.ctx.createBufferSource()
 
   private lastPauseTime = new Date()
 
@@ -59,6 +60,7 @@ export default class Cinemagraph extends React.Component<Props> {
 
     if (this.audioRef.current) {
       if (media.dialog) {
+        console.log("Has dialog!")
         this.audioRef.current.src = media.dialog
         this.audioRef.current.load()
       } else {
@@ -66,26 +68,17 @@ export default class Cinemagraph extends React.Component<Props> {
       }
     }
 
-    // Background audio
-    const src = media.bgaudio
-    let audioData: any, srcNode: AudioBufferSourceNode;  // global so we can access them from handlers
-
-    const decode = (buffer: any) => {
-      this.ctx.decodeAudioData(buffer, playLoop)
-    }
-
-    if (src) {
-      fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
-    }
-
-    // Sets up a new source node as needed as stopping will render current invalid
-    const playLoop = (abuffer: any) => {
-      if (!audioData) audioData = abuffer;  // create a reference for control buttons
-      srcNode = this.ctx.createBufferSource();  // create audio source
-      srcNode.buffer = abuffer;             // use decoded buffer
-      srcNode.connect(this.ctx.destination);    // create output
-      srcNode.loop = true;                  // takes care of perfect looping
-      srcNode.start();                      // play...
+    if (this.bgAudioRef.current) {
+      if (media.bgaudio && media.hasBg) {
+        this.bgAudioRef.current.src = media.bgaudio
+        this.bgAudioRef.current.load()
+        if (window.AudioContext) {
+          const src = this.ctx.createMediaElementSource(this.bgAudioRef.current)
+          src.connect(this.ctx.destination)
+        }
+      } else {
+        this.bgAudioRef.current.src = "broken"
+      }
     }
   }
 
@@ -96,7 +89,7 @@ export default class Cinemagraph extends React.Component<Props> {
       <div>
         <video className='cinemagraph' autoPlay loop muted playsInline ref={this.videoRef} />
         <audio autoPlay loop ref={this.bgAudioRef} />
-        <audio ref={this.audioRef} />
+        <audio autoPlay ref={this.audioRef} />
       </div>
     )
   }

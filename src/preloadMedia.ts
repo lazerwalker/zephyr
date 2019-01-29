@@ -1,8 +1,11 @@
+import { Media } from "./data";
+
 interface VideoSource {
   bgaudio: string
   dialog: string
   name: string
   video: string
+  hasBg: boolean
 }
 
 export interface CacheEntry {
@@ -10,12 +13,13 @@ export interface CacheEntry {
   bgaudio: string | void
   dialog: string | void
   video: string | void
+  hasBg: boolean
 }
 
-export default function preloadMedia(names: string[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
+export default function preloadMedia(media: Media[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
   // TODO: This can be more granular than just tracking each level of the game 
   let completedCount = 0
-  let totalCount = names.length
+  let totalCount = media.length
   function wrapPromise<T>(promise: Promise<T>): Promise<T> {
     return promise.then(foo => {
       completedCount += 1
@@ -29,17 +33,19 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
   const supportsWebm = (videoEl.canPlayType('video/webm') != '')
   const videoExtension = (supportsWebm ? "webm" : "mp4")
 
-  let sources: VideoSource[] = names.map((n) => {
+  let sources: VideoSource[] = media.map((m) => {
     return {
-      bgaudio: `bgaudio/${n}.mp3`,
-      dialog: `dialog/${n}.mp3`,
-      name: n,
-      video: `cinemagraphs/${n}.${videoExtension}`
+      bgaudio: `bgaudio/${m.name}.mp3`,
+      dialog: `dialog/${m.name}.mp3`,
+      name: m.name,
+      video: `cinemagraphs/${m.name}.${videoExtension}`,
+      hasBg: m.hasBg || false
     }
   })
 
   function fetchURL(url: string): Promise<string | void> {
     return fetch(url, { mode: "cors" })
+      .then(f => { console.log('fetched!', f); return f })
       .then(r => r.blob())
       .then(URL.createObjectURL)
       .catch(e => console.log(`Couldn't load ${url}, ${e}`))
@@ -52,7 +58,8 @@ export default function preloadMedia(names: string[], onProgressUpdate: (percent
         bgaudio: results[0],
         dialog: results[1],
         name: source.name,
-        video: results[2]
+        video: results[2],
+        hasBg: source.hasBg // gets looped in in App.tsx. TODO: Move that logic here.
       }
     })
   })

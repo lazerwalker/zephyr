@@ -3,6 +3,7 @@ export interface Media {
   text?: string
   textPos?: number;
   noAudio?: boolean
+  hasBg?: boolean
 }
 
 const data: Media[] = [
@@ -17,6 +18,7 @@ const data: Media[] = [
   },
   {
     name: "shower",
+    hasBg: true
   },
   {
     name: "street",

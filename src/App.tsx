@@ -47,7 +47,7 @@ class App extends Component<{}, State> {
     window.addEventListener('resize', resizeViewport)
     resizeViewport()
 
-    preloadMedia(Levels.map(v => v.name), (percent) => {
+    preloadMedia(Levels, (percent) => {
       if (this.progressBarRef.current) {
         this.progressBarRef.current.value = percent
       }
