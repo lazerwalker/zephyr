@@ -41,6 +41,10 @@ html {
   transition: none;
 }
 
+#next-wrapper.hidden #next {
+  cursor: default;
+}
+
 #next {
   background-color: clear;
   color: black;
