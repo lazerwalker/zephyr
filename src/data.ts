@@ -1,37 +1,22 @@
 export interface Media {
   name: string
-  playCoord?: { x: number, y: number }
-  nextCoord?: { x: number, y: number }
   text?: string
   textPos?: number;
+  noAudio?: boolean
 }
 
 const data: Media[] = [
   {
     name: "headphones",
-    nextCoord: {
-      x: 0, y: 0
-    },
     text: "This experience requires sound.<br/>Headphones are recommended.",
-    textPos: 10
+    textPos: 10,
+    noAudio: true
   },
   {
     name: "bed",
-    playCoord: {
-      x: 20, y: 60
-    },
-    nextCoord: {
-      x: 70, y: 60
-    }
   },
   {
     name: "shower",
-    playCoord: {
-      x: 40, y: 70
-    },
-    nextCoord: {
-      x: 70, y: 50
-    }
   },
   {
     name: "street",
@@ -40,13 +25,22 @@ const data: Media[] = [
     name: "parks",
   },
   {
+    name: "plaque",
+  },
+  {
+    name: "garbagedump"
+  },
+  {
+    name: "slide",
+  },
+  {
+    name: "bench",
+  },
+  {
+    name: "fountain",
+  },
+  {
     name: "drugdealers",
-  },
-  {
-    name: "turkey",
-  },
-  {
-    name: "keepwalking",
   },
   {
     name: "dolores",
@@ -55,32 +49,20 @@ const data: Media[] = [
     name: "urethra",
   },
   {
-    name: "google",
+    name: "forest",
   },
   {
-    name: "fork",
-  },
-  {
-    name: "slide",
-  },
-  {
-    name: "up",
-  },
-  {
-    name: "stumble",
-  },
-  {
-    name: "run",
+    name: "forest2",
   },
   {
     name: "canal",
   },
   {
-    name: "across",
-  },
-  {
     name: "slidetop",
   },
+  {
+    name: "poem",
+  }
 ]
 
 export default data
