@@ -47,6 +47,8 @@ class App extends Component<{}, State> {
     window.addEventListener('resize', resizeViewport)
     resizeViewport()
 
+    window.addEventListener('keypress', this.clickedNext)
+
     preloadMedia(Levels, (percent) => {
       if (this.progressBarRef.current) {
         this.progressBarRef.current.value = percent
@@ -73,17 +75,17 @@ class App extends Component<{}, State> {
             <div>Loading!</div>
             <progress ref={this.progressBarRef} value={this.state.loadingProgress} max="100" />
           </div>
-        </div>
+        </div >
       )
     }
 
     const video = Levels[this.state.index]
 
     const next = <div id='next-wrapper'
-      onClick={this.clickedNext}
       className={(video.noAudio || this.state.playState === PlayState.Complete) ? "visible" : "hidden"}
     >
-      <div id='next'>→</div>
+      <div id='next' onClick={this.clickedNext}
+      >→</div>
     </div >
 
     let text;
@@ -109,6 +111,9 @@ class App extends Component<{}, State> {
   }
 
   clickedNext = () => {
+    const canContinue = Levels[this.state.index].noAudio || this.state.playState === PlayState.Complete
+    if (!canContinue) return
+
     const index = (this.state.index >= Levels.length - 1 ? 0 : this.state.index + 1)
     this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
 
