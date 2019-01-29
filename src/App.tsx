@@ -79,27 +79,14 @@ class App extends Component<{}, State> {
 
     const video = Levels[this.state.index]
 
-    let next, text;
-    if (this.state.playState === PlayState.NotStarted && video.playCoord) {
-      next = <div id='next-wrapper'
-        onClick={this.clickedPlay}
-        style={{
-          left: `${video.playCoord!.x}%`,
-          top: `${video.playCoord!.y}%`,
-        }}>
-        <div id='next' />
-      </div>
-    } else if (this.state.playState !== PlayState.Playing) {
-      next = <div id='next-wrapper'
-        onClick={this.clickedNext}
-        style={{
-          left: `${video.nextCoord!.x}%`,
-          top: `${video.nextCoord!.y}%`,
-        }}>
-        <div id='next' />
-      </div>
-    }
+    const next = <div id='next-wrapper'
+      onClick={this.clickedNext}
+      className={(video.noAudio || this.state.playState === PlayState.Complete) ? "visible" : "hidden"}
+    >
+      <div id='next'>→</div>
+    </div >
 
+    let text;
     if (video.text) {
       text = <div className='text'
         dangerouslySetInnerHTML={{ __html: video.text }}
@@ -121,32 +108,22 @@ class App extends Component<{}, State> {
     );
   }
 
-  onKeyDown = (e: KeyboardEvent) => {
-    if (this.state.playState === PlayState.Complete) {
-      this.next()
-    } else if (this.state.playState === PlayState.NotStarted) {
-      this.playerRef.current!.playIfNotPlaying()
-      this.setState({ playState: PlayState.Playing })
-    }
-  }
-
-  onTouchStart = (e: TouchEvent) => {
-    if (this.state.playState === PlayState.Complete) {
-      this.next()
-    } else if (this.state.playState === PlayState.NotStarted) {
-      this.playerRef.current!.playIfNotPlaying()
-      this.setState({ playState: PlayState.Playing })
-    }
-  }
-
-  clickedPlay = () => {
-    if (this.state.playState !== PlayState.NotStarted) { return }
-    this.playerRef.current!.playIfNotPlaying()
-    this.setState({ playState: PlayState.Playing })
-  }
-
   clickedNext = () => {
-    this.next()
+    const index = (this.state.index >= Levels.length - 1 ? 0 : this.state.index + 1)
+    this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
+
+    const video = Levels[index]
+    const media = this.cache[video.name]
+
+    // TODO: The 10ms delay is necessay, but shouldn't be!
+    setTimeout(() => {
+      if (!this.playerRef.current) {
+        return
+      }
+      this.playerRef.current.loadVideo(media)
+      this.playerRef.current!.playIfNotPlaying()
+      this.setState({ playState: PlayState.Playing })
+    }, 10)
   }
 
   stopAudio = () => {
@@ -157,22 +134,6 @@ class App extends Component<{}, State> {
   onComplete = () => {
     console.log("Is complete!")
     this.setState({ playState: PlayState.Complete })
-  }
-
-  next() {
-    const index = (this.state.index >= Levels.length - 1 ? 0 : this.state.index + 1)
-    this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
-
-    const video = Levels[index]
-    const media = this.cache[video.name]
-
-    // TODO: The 100ms delay is necessay, but shouldn't be!
-    setTimeout(() => {
-      if (!this.playerRef.current) {
-        return
-      }
-      this.playerRef.current.loadVideo(media)
-    }, 10)
   }
 }
 
