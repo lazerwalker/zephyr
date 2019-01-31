@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-const tapOrClick = require('react-tap-or-click')
-
+import React, { Component, SyntheticEvent } from 'react';
 import './App.css';
 import Cinemagraph from './components/Cinemagraph';
 import preloadMedia, { CacheEntry } from './preloadMedia';
@@ -94,7 +92,7 @@ class App extends Component<{}, State> {
     const next = <div id='next-wrapper'
       className={(video.noAudio || this.state.playState === PlayState.Complete) ? "visible" : "hidden"}
     >
-      <div id='next' {...tapOrClick(this.clickedNext)}
+      <div id='next' onClick={this.clickedNext}
       >→</div>
     </div >
 
