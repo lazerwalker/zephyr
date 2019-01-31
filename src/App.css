@@ -93,6 +93,7 @@ a {
 }
 
 #start {
+  box-sizing: border-box;
   background-color: #E4D8D2;
   border: 0.5px solid #988C86;
   border-radius: 40px;
@@ -103,6 +104,7 @@ a {
 }
 
 #play-icon {
+  box-sizing: border-box;
   border-color: transparent transparent transparent #4B3F39;
 
   border-style: solid;
@@ -117,4 +119,12 @@ a {
 
 .fade {
   opacity: 0;
+}
+
+/** They play button looks weird only in Mobile Safari (TODO: check Android). 
+This is (sigh) a media query that only triggers on iOS devices */
+@supports (-webkit-overflow-scrolling: touch) {
+  #play-icon {
+    margin-left: 14px;
+  }
 }
