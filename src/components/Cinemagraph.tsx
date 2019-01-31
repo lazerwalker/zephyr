@@ -4,6 +4,7 @@ import { CacheEntry } from '../preloadMedia';
 interface Props {
   media: CacheEntry
   onComplete?: () => void
+  silent?: boolean
 }
 
 export default class Cinemagraph extends React.Component<Props> {
@@ -85,11 +86,32 @@ export default class Cinemagraph extends React.Component<Props> {
 
 
   render() {
+    let video, audio;
+
+    if (this.props.media.video) {
+      video = (
+        <video className='cinemagraph' autoPlay loop muted playsInline ref={this.videoRef}>
+          <source src={this.props.media.video} type={this.props.media.videoType}></source>
+        </video>
+      )
+    } else {
+      video = <video className='cinemagraph' autoPlay loop muted playsInline ref={this.videoRef} />
+    }
+
+    if (!this.props.silent) {
+      audio = (
+        <div>
+          <audio autoPlay loop ref={this.bgAudioRef} />
+          <audio autoPlay ref={this.audioRef} />
+        </div>
+      )
+    }
+
+
     return (
       <div>
-        <video className='cinemagraph' autoPlay loop muted playsInline ref={this.videoRef} />
-        <audio autoPlay loop ref={this.bgAudioRef} />
-        <audio autoPlay ref={this.audioRef} />
+        {video}
+        {audio}
       </div>
     )
   }

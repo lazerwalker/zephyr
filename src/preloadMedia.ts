@@ -6,6 +6,7 @@ interface VideoSource {
   name: string
   video: string
   hasBg: boolean
+  videoType: string
 }
 
 export interface CacheEntry {
@@ -14,6 +15,7 @@ export interface CacheEntry {
   dialog: string | void
   video: string | void
   hasBg: boolean
+  videoType: string
 }
 
 export default function preloadMedia(media: Media[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
@@ -32,6 +34,7 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
   const videoEl = document.createElement('video')
   const supportsWebm = (videoEl.canPlayType('video/webm') != '')
   const videoExtension = (supportsWebm ? "webm" : "mp4")
+  const videoType = `video/${videoExtension}`
 
   let sources: VideoSource[] = media.map((m) => {
     return {
@@ -39,7 +42,8 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
       dialog: `dialog/${m.name}.mp3`,
       name: m.name,
       video: `cinemagraphs/${m.name}.${videoExtension}`,
-      hasBg: m.hasBg || false
+      hasBg: m.hasBg || false,
+      videoType
     }
   })
 
@@ -59,7 +63,8 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
         dialog: results[1],
         name: source.name,
         video: results[2],
-        hasBg: source.hasBg // gets looped in in App.tsx. TODO: Move that logic here.
+        hasBg: source.hasBg, // gets looped in in App.tsx. TODO: Move that logic here.
+        videoType: source.videoType
       }
     })
   })
