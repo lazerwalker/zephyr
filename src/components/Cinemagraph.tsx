@@ -61,6 +61,15 @@ export default class Cinemagraph extends React.Component<Props> {
     }, 600)
   }
 
+  public fadeOut(callback: (() => void)) {
+    if (!this.videoRef.current) {
+      return callback()
+    }
+
+    this.videoRef.current.classList.add('fade')
+    setTimeout(callback, 600)
+  }
+
   public loadVideo(media: CacheEntry) {
     console.log("Loading video", media.name)
     this.setState({ media })

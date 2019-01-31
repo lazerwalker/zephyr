@@ -127,7 +127,11 @@ class App extends Component<{}, State> {
 
     const index = this.state.index + 1
     if (index >= Levels.length) {
-      this.setState({ index: 0, playState: PlayState.MainMenu })
+      if (this.playerRef.current) {
+        this.playerRef.current.fadeOut(() => {
+          this.setState({ index: 0, playState: PlayState.MainMenu })
+        })
+      }
       return
     }
 
