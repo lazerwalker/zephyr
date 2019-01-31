@@ -1,20 +1,16 @@
 import { Media } from "./data";
 
 interface VideoSource {
-  bgaudio: string
   dialog: string
   name: string
   video: string
-  hasBg: boolean
   videoType: string
 }
 
 export interface CacheEntry {
   name: string
-  bgaudio: string | void
   dialog: string | void
   video: string | void
-  hasBg: boolean
   videoType: string
 }
 
@@ -38,11 +34,9 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
 
   let sources: VideoSource[] = media.map((m) => {
     return {
-      bgaudio: `bgaudio/${m.name}.mp3`,
       dialog: `dialog/${m.name}.mp3`,
       name: m.name,
       video: `cinemagraphs/${m.name}.${videoExtension}`,
-      hasBg: m.hasBg || false,
       videoType
     }
   })
@@ -56,14 +50,12 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
   }
 
   let promises: Promise<CacheEntry>[] = sources.map(source => {
-    const sources = [source.bgaudio, source.dialog, source.video]
+    const sources = [source.dialog, source.video]
     return Promise.all(sources.map(fetchURL)).then(results => {
       return {
-        bgaudio: results[0],
-        dialog: results[1],
+        dialog: results[0],
         name: source.name,
-        video: results[2],
-        hasBg: source.hasBg, // gets looped in in App.tsx. TODO: Move that logic here.
+        video: results[1],
         videoType: source.videoType
       }
     })

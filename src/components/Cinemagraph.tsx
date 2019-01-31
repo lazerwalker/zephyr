@@ -10,7 +10,6 @@ interface Props {
 export default class Cinemagraph extends React.Component<Props> {
   private videoRef = React.createRef<HTMLVideoElement>()
   private audioRef = React.createRef<HTMLAudioElement>()
-  private bgAudioRef = React.createRef<HTMLAudioElement>()
 
   private ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
   private sourceNode = this.ctx.createBufferSource()
@@ -92,19 +91,6 @@ export default class Cinemagraph extends React.Component<Props> {
         this.audioRef.current.src = "broken"
       }
     }
-
-    if (this.bgAudioRef.current) {
-      if (media.bgaudio && media.hasBg) {
-        this.bgAudioRef.current.src = media.bgaudio
-        this.bgAudioRef.current.load()
-        if (window.AudioContext) {
-          const src = this.ctx.createMediaElementSource(this.bgAudioRef.current)
-          src.connect(this.ctx.destination)
-        }
-      } else {
-        this.bgAudioRef.current.src = "broken"
-      }
-    }
   }
 
 
@@ -125,7 +111,6 @@ export default class Cinemagraph extends React.Component<Props> {
     if (!this.props.silent) {
       audio = (
         <div>
-          <audio autoPlay loop ref={this.bgAudioRef} />
           <audio autoPlay ref={this.audioRef} />
         </div>
       )
