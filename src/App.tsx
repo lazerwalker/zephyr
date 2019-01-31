@@ -4,11 +4,13 @@ import Cinemagraph from './components/Cinemagraph';
 import preloadMedia, { CacheEntry } from './preloadMedia';
 
 import Levels from './data'
+import MainMenu from './components/MainMenu';
 
 enum PlayState {
   NotStarted = 0,
   Playing = 1,
-  Complete = 2
+  Complete = 2,
+  MainMenu
 }
 
 interface State {
@@ -32,7 +34,7 @@ class App extends Component<{}, State> {
       index: 0,
       keypressIndex: 0,
       keyTimeout: 1000,
-      playState: PlayState.NotStarted,
+      playState: PlayState.MainMenu,
       loaded: false,
       loadingProgress: 0
     }
@@ -59,9 +61,6 @@ class App extends Component<{}, State> {
 
       const video = Levels[0]
       const media = this.cache[video.name]
-      setTimeout(() => {
-        this.playerRef.current!.loadVideo(media)
-      }, 100)
     })
   }
 
@@ -76,6 +75,19 @@ class App extends Component<{}, State> {
             <progress ref={this.progressBarRef} value={this.state.loadingProgress} max="100" />
           </div>
         </div >
+      )
+    }
+
+    if (this.state.playState === PlayState.MainMenu) {
+      return (
+        <div className="App" >
+          <div className="video-wrapper">
+            <MainMenu
+              onStart={this.startGame}
+              media={this.cache["bed"]}
+            />
+          </div>
+        </div>
       )
     }
 
@@ -110,6 +122,11 @@ class App extends Component<{}, State> {
     );
   }
 
+  startGame = () => {
+    this.setState({ playState: PlayState.NotStarted })
+    // TODO: DO the equivalent of clickedNext to set up video
+  }
+
   clickedNext = () => {
     const canContinue = Levels[this.state.index].noAudio || this.state.playState === PlayState.Complete
     if (!canContinue) return
@@ -122,7 +139,7 @@ class App extends Component<{}, State> {
 
     // TODO: The 10ms delay is necessay, but shouldn't be!
     setTimeout(() => {
-      if (!this.playerRef.current) {
+      if (!(this.playerRef && this.playerRef.current)) {
         return
       }
       this.playerRef.current.loadVideo(media)

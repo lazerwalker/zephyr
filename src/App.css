@@ -72,3 +72,12 @@ html {
   left: 0;
   width: 100%;
 }
+
+#menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 20px;
+  width: 100vw;
+  height: 100vh;
+}
