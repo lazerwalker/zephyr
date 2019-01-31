@@ -29,7 +29,7 @@ class App extends Component<{}, State> {
   constructor(props: any) {
     super(props)
     this.state = {
-      index: 0,
+      index: -1,
       playState: PlayState.MainMenu,
       loaded: false,
       loadingProgress: 0
@@ -80,7 +80,7 @@ class App extends Component<{}, State> {
           <div className="video-wrapper">
             <MainMenu
               onStart={this.startGame}
-              media={this.cache["bed"]}
+              media={this.cache["title"]}
             />
           </div>
         </div>
@@ -117,16 +117,15 @@ class App extends Component<{}, State> {
   }
 
   startGame = () => {
-    this.setState({ playState: PlayState.NotStarted })
-    // TODO: DO the equivalent of clickedNext to set up video
+    this.setState({ playState: PlayState.NotStarted, index: this.nextIndex(0)! })
   }
 
   clickedNext = () => {
     const canContinue = Levels[this.state.index].noAudio || this.state.playState === PlayState.Complete
     if (!canContinue) return
 
-    const index = this.state.index + 1
-    if (index >= Levels.length) {
+    const index = this.nextIndex()
+    if (!index) {
       if (this.playerRef.current) {
         this.playerRef.current.fadeOut(() => {
           this.setState({ index: 0, playState: PlayState.MainMenu })
@@ -143,6 +142,20 @@ class App extends Component<{}, State> {
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(media)
     }
+  }
+
+  nextIndex = (startIndex?: number): number | undefined => {
+    let index = (startIndex === undefined ? this.state.index : startIndex) + 1
+
+    while (Levels[index] && Levels[index].ignore) {
+      index += 1
+    }
+
+    if (index >= Levels.length) {
+      return undefined
+    }
+
+    return index
   }
 
   stopAudio = () => {

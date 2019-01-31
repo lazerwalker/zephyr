@@ -3,9 +3,14 @@ export interface Media {
   text?: string
   noAudio?: boolean
   hasBg?: boolean
+  ignore?: boolean
 }
 
 const data: Media[] = [
+  {
+    name: "title",
+    ignore: true
+  },
   {
     name: "headphones",
     text: "this experience requires sound.",
