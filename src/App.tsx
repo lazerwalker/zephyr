@@ -131,7 +131,12 @@ class App extends Component<{}, State> {
     const canContinue = Levels[this.state.index].noAudio || this.state.playState === PlayState.Complete
     if (!canContinue) return
 
-    const index = (this.state.index >= Levels.length - 1 ? 0 : this.state.index + 1)
+    const index = this.state.index + 1
+    if (index >= Levels.length) {
+      this.setState({ index: 0, keypressIndex: 0, playState: PlayState.MainMenu })
+      return
+    }
+
     this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
 
     const video = Levels[index]
