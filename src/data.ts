@@ -21,7 +21,6 @@ const data: Media[] = [
   },
   {
     name: "shower",
-    hasBg: true
   },
   {
     name: "street",
@@ -58,6 +57,7 @@ const data: Media[] = [
   },
   {
     name: "forest2",
+    noAudio: true
   },
   {
     name: "canal",
