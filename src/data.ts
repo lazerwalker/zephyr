@@ -1,7 +1,6 @@
 export interface Media {
   name: string
   text?: string
-  textPos?: number;
   noAudio?: boolean
   hasBg?: boolean
 }
@@ -9,8 +8,7 @@ export interface Media {
 const data: Media[] = [
   {
     name: "headphones",
-    text: "This experience requires sound.<br/>Headphones are recommended.",
-    textPos: 10,
+    text: "this experience requires sound.",
     noAudio: true
   },
   {

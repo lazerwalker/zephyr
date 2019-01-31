@@ -71,7 +71,7 @@ class App extends Component<{}, State> {
       return (
         <div className="App" >
           <div className="video-wrapper">
-            <div>Loading!</div>
+            <div>loading!</div>
             <progress ref={this.progressBarRef} value={this.state.loadingProgress} max="100" />
           </div>
         </div >
@@ -102,9 +102,7 @@ class App extends Component<{}, State> {
 
     let text;
     if (video.text) {
-      text = <div className='text'
-        dangerouslySetInnerHTML={{ __html: video.text }}
-        style={{ top: `${video.textPos!}%` }} />
+      text = <div className='text' dangerouslySetInnerHTML={{ __html: video.text }} />
     }
 
     return (
