@@ -15,8 +15,6 @@ enum PlayState {
 
 interface State {
   index: number
-  keypressIndex: number
-  keyTimeout: number
   playState: PlayState
   loaded: boolean
   loadingProgress: number
@@ -32,8 +30,6 @@ class App extends Component<{}, State> {
     super(props)
     this.state = {
       index: 0,
-      keypressIndex: 0,
-      keyTimeout: 1000,
       playState: PlayState.MainMenu,
       loaded: false,
       loadingProgress: 0
@@ -131,23 +127,18 @@ class App extends Component<{}, State> {
 
     const index = this.state.index + 1
     if (index >= Levels.length) {
-      this.setState({ index: 0, keypressIndex: 0, playState: PlayState.MainMenu })
+      this.setState({ index: 0, playState: PlayState.MainMenu })
       return
     }
 
-    this.setState({ index, keypressIndex: 0, playState: PlayState.NotStarted })
+    this.setState({ index, playState: PlayState.NotStarted })
 
     const video = Levels[index]
     const media = this.cache[video.name]
 
-    // TODO: The 10ms delay is necessay, but shouldn't be!
-    setTimeout(() => {
-      if (!(this.playerRef && this.playerRef.current)) {
-        return
-      }
-      this.playerRef.current.loadVideo(media)
-      this.setState({ playState: PlayState.Playing })
-    }, 10)
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(media)
+    }
   }
 
   stopAudio = () => {

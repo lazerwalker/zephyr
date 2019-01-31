@@ -31,6 +31,7 @@ a {
 .cinemagraph {
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
+  transition: opacity 600ms ease-in-out;
 }
 
 #next-wrapper {
@@ -109,5 +110,8 @@ a {
 
 #start:hover {
   background-color: #CBBFB9;
+}
 
+.fade {
+  opacity: 0;
 }

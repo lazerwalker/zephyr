@@ -46,6 +46,21 @@ export default class Cinemagraph extends React.Component<Props> {
     this.audioRef.current.pause()
   }
 
+  public fadeTransition(media: CacheEntry) {
+    console.log("Fading")
+    if (!this.videoRef.current) return
+
+    this.videoRef.current.classList.add('fade')
+
+    setTimeout(() => {
+      this.videoRef.current!.classList.remove('fade')
+    }, 600)
+
+    setTimeout(() => {
+      this.loadVideo(media)
+    }, 600)
+  }
+
   public loadVideo(media: CacheEntry) {
     console.log("Loading video", media.name)
     this.setState({ media })
