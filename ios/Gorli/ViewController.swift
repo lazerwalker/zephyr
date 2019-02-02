@@ -53,5 +53,13 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         print("Fail provisional", error)
     }
+
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+        guard let url = navigationAction.request.url else { return nil }
+        if navigationAction.targetFrame == nil {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        return nil
+    }
 }
 
