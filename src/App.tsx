@@ -47,6 +47,7 @@ class App extends Component<{}, State> {
 
     window.addEventListener('keypress', this.clickedNext)
 
+    console.log("isWKWebView: ", (window as any).skipPreload)
     preloadMedia(Levels, (window as any).skipPreload, (percent) => {
       if (this.progressBarRef.current) {
         this.progressBarRef.current.value = percent

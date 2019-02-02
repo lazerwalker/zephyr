@@ -13,12 +13,19 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        let userScript = WKUserScript(source: "window.skipPreload = true;",
+                                      injectionTime: .atDocumentStart,
+                                      forMainFrameOnly: true)
+
+        let userContentController = WKUserContentController()
+        userContentController.addUserScript(userScript)
 
         let configuration = WKWebViewConfiguration()
         configuration.allowsInlineMediaPlayback = true
         configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        configuration.userContentController = userContentController
 
         let webView = WKWebView(frame: view.bounds, configuration: configuration)
         webView.uiDelegate = self
