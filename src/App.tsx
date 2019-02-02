@@ -47,7 +47,7 @@ class App extends Component<{}, State> {
 
     window.addEventListener('keypress', this.clickedNext)
 
-    preloadMedia(Levels, (percent) => {
+    preloadMedia(Levels, (window as any).skipPreload, (percent) => {
       if (this.progressBarRef.current) {
         this.progressBarRef.current.value = percent
       }

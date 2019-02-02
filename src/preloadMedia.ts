@@ -1,12 +1,5 @@
 import { Media } from "./data";
 
-interface VideoSource {
-  dialog: string
-  name: string
-  video: string
-  videoType: string
-}
-
 export interface CacheEntry {
   name: string
   dialog: string | void
@@ -14,7 +7,7 @@ export interface CacheEntry {
   videoType: string
 }
 
-export default function preloadMedia(media: Media[], onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
+export default function preloadMedia(media: Media[], skipPreload: boolean = false, onProgressUpdate: (percent: number) => void): Promise<{ [name: string]: CacheEntry }> {
   // TODO: This can be more granular than just tracking each level of the game 
   let completedCount = 0
   let totalCount = media.length
@@ -32,7 +25,7 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
   const videoExtension = (supportsWebm ? "webm" : "mp4")
   const videoType = `video/${videoExtension}`
 
-  let sources: VideoSource[] = media.map((m) => {
+  let sources: CacheEntry[] = media.map((m) => {
     return {
       dialog: `dialog/${m.name}.mp3`,
       name: m.name,
@@ -41,7 +34,17 @@ export default function preloadMedia(media: Media[], onProgressUpdate: (percent:
     }
   })
 
-  function fetchURL(url: string): Promise<string | void> {
+  if (skipPreload) {
+    let map: { [name: string]: CacheEntry } = {}
+    sources.forEach(s => {
+      map[s.name] = s
+    })
+    return Promise.resolve(map)
+  }
+
+  function fetchURL(url: string | void): Promise<string | void> {
+    if (!url) return Promise.resolve()
+
     return fetch(url, { mode: "cors" })
       .then(f => { console.log('fetched!', f); return f })
       .then(r => r.blob())
