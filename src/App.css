@@ -45,10 +45,19 @@ a {
 }
 
 .speech-wrapper {
-  top: 50%;
-  margin-top: -30px;
+  top: 29%;
+  margin-top: 0;
   left: 30%;
   margin-left: 0;
+}
+
+.speech-bubble {
+  opacity: 0.8 !important;
+}
+
+.speech-bubble img {
+  width: 64px;
+  height: 64px;
 }
 
 .next-wrapper.down {

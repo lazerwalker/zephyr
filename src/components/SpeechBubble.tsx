@@ -9,7 +9,9 @@ export default class SpeechBubble extends React.Component<Props> {
     return (
       <div className="speech-wrapper">
         <div className='speech-bubble' onClick={this.props.onClick}
-        >S</div>
+        >
+          <img src="speechbubble.png" />
+        </div>
       </div >
     )
   }
