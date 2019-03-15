@@ -12,10 +12,13 @@ interface Props {
 
 export default class TrainCarView extends React.Component<Props> {
   render() {
-    console.log(this.props.car)
+    const forwardArrow = (this.props.car.front ? <Arrow onClick={this.moveForward} direction={ArrowDirection.Up} />
+      : undefined)
+    const backwardArrow = (this.props.car.rear ? <Arrow onClick={this.moveBackward} direction={ArrowDirection.Down} />
+      : undefined)
     return <div>
-      <Arrow onClick={this.moveForward} direction={ArrowDirection.Up} />
-      <Arrow onClick={this.moveBackward} direction={ArrowDirection.Down} />
+      {forwardArrow}
+      {backwardArrow}
     </div>
   }
 

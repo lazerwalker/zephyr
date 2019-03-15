@@ -2,7 +2,7 @@ import { CacheEntry } from "./preloadMedia";
 
 enum CarType {
   ObservationTable = "observation-table",
-  ObservationLookout = "Ben/angry",
+  ObservationLookout = "observation-lookout",
   Cafe = "cafe",
   Dining = "dining",
   Sleeper = "sleeper"
@@ -38,10 +38,8 @@ export class Train {
     }
 
     var cars: TrainCar[] = []
-    for (let i = 0; i < 5; i++) {
-      addCarToFront(cars, new TrainCar(CarType.ObservationTable))
-      addCarToFront(cars, new TrainCar(CarType.ObservationLookout))
-    }
+    addCarToFront(cars, new TrainCar(CarType.ObservationLookout))
+    addCarToFront(cars, new TrainCar(CarType.ObservationTable))
 
     return new Train(cars)
   }

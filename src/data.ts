@@ -11,6 +11,9 @@ const data: Media[] = [
     name: "observation-table"
   },
   {
+    name: "observation-lookout"
+  },
+  {
     name: "Ben/angry"
   },
   {
