@@ -15,6 +15,9 @@ export default class MenuView extends React.Component<Props> {
   render() {
     return (
       <div className='menu-view'>
+        <div className="desire-wrapper">
+          <div className="desire">I would like to trade Foo for Bar.</div>
+        </div>
         <Button className='trade' onClick={this.trade}>Trade Foo for Bar</Button>
         <Button className='ask' onClick={this.ask}>Where can I find Foo?</Button>
         <Button className='goodbue' onClick={this.goodbye}>Goodbye!</Button>

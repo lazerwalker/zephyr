@@ -179,3 +179,18 @@ button.trade {
 button.ask {
   bottom: 80px;
 }
+
+.menu-view .desire {
+  background-color: #E4D8D2;
+  margin: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.menu-view .desire-wrapper {
+  position: absolute;
+  bottom: 180px;
+  width: 100%;
+}
