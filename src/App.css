@@ -158,21 +158,22 @@ This is (sigh) a media query that only triggers on iOS devices */
 }
 
 button {
+  font-size: 16px;
   position: absolute;
-  bottom: 30px;
+  bottom: 60px;
   width: 320px;
   margin-left: -160px;
-  height: 44px;
+  height: 50px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   background-color: #E4D8D2;
 }
 
 button.trade {
-  bottom: 130px;
+  bottom: 170px;
 }
 
 button.ask {
-  bottom: 80px;
+  bottom: 115px;
 }
 
 .desire, .thank-you, .text {
@@ -186,12 +187,6 @@ button.ask {
 
 .text-wrapper {
   position: absolute;
-  bottom: 80px;
+  bottom: 120px;
   width: 100%;  
-}
-
-.desire-wrapper {
-  position: absolute;
-  bottom: 180px;
-  width: 100%;
 }
