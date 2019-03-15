@@ -15,15 +15,21 @@ interface Props {
 
 export default class TrainCarView extends React.Component<Props> {
   render() {
-    console.log("BUBBLES", this.props.car.bubbles(), this.props.car)
     const forwardArrow = (this.props.car.front ? <Arrow onClick={this.moveForward} direction={ArrowDirection.Up} />
       : undefined)
     const backwardArrow = (this.props.car.rear ? <Arrow onClick={this.moveBackward} direction={ArrowDirection.Down} />
       : undefined)
+
+    const positions = _.shuffle(this.props.car.bubbles())
+
+    const bubbles = this.props.car.trades.map((t, i) => {
+      return <SpeechBubble onClick={this.speechBubble} position={positions.shift()!} />
+    })
+
     return <div>
       {forwardArrow}
       {backwardArrow}
-      <SpeechBubble onClick={this.speechBubble} position={_.sample(this.props.car.bubbles())!} />
+      {bubbles}
     </div>
   }
 

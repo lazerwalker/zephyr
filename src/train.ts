@@ -56,31 +56,13 @@ export class Train {
 
     const cycle = this.generateTradeCycle()
     const backupCycle = this.generateTradeCycle()
+    cycle.concat(backupCycle.slice(0, 2))
 
-    let tradeBuckets: Trade[][] = []
     var cars: TrainCar[] = []
 
-    for (let i = 0; i < 4; i++) {
-      let trades = [cycle.shift()]
-
-      for (let j = 0; j < _.random(0, 2); j++) {
-        trades.push(backupCycle.shift())
-      }
-
-      tradeBuckets.push((trades.filter(t => !_.isUndefined(t)) as Trade[]))
-    }
-
-    while (cycle.length > 0) {
-      const next = cycle.shift()
-      if (!next) { continue }
-      tradeBuckets[_.random(0, tradeBuckets.length)].push(next)
-    }
-
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < cycle.length + 1; i++) {
       let type = (i % 2 === 0 ? CarType.ObservationLookout : CarType.ObservationTable)
-      let bucket = tradeBuckets.shift()
-      if (!bucket) { console.log("OOPS ran out of buckets"); continue; }
-      addCarToFront(cars, new TrainCar(type, bucket))
+      addCarToFront(cars, new TrainCar(type, [cycle.shift()!]))
     }
 
     return new Train(cars)
