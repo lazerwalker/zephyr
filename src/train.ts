@@ -1,6 +1,7 @@
 import { CacheEntry } from "./preloadMedia";
 import * as _ from 'lodash'
 import { UIPosition } from "./data";
+import { Human } from "./Human";
 
 enum CarType {
   ObservationTable = "observation-table",
@@ -23,9 +24,13 @@ export class TrainCar {
 
   trades: Trade[]
 
+  human: Human
+
   constructor(type: CarType = CarType.ObservationLookout, trades: Trade[]) {
     this.type = type
     this.trades = trades
+
+    this.human = new Human("Ben", trades[0])
   }
 
   hasTrade(item: String): boolean {
@@ -59,11 +64,13 @@ export class Train {
     cycle.concat(backupCycle.slice(0, 2))
 
     var cars: TrainCar[] = []
+    console.log("CYCLE", cycle)
 
-    for (let i = 0; i < cycle.length + 1; i++) {
-      let type = (i % 2 === 0 ? CarType.ObservationLookout : CarType.ObservationTable)
+    while (cycle.length > 0) {
+      let type = (cars.length % 2 === 0 ? CarType.ObservationLookout : CarType.ObservationTable)
       addCarToFront(cars, new TrainCar(type, [cycle.shift()!]))
     }
+    console.log(cars)
 
     return new Train(cars)
   }
@@ -71,10 +78,10 @@ export class Train {
   static generateTradeCycle(): (Trade[]) {
     const items = [
       "optimism",
-      "a Unity programmer",
-      "a USB key",
+      "Unity programmer",
+      "USB key",
       "coffee",
-      "a healthy snack"
+      "healthy snack"
     ]
 
     let complete = false

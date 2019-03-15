@@ -23,7 +23,7 @@ export default class TrainCarView extends React.Component<Props> {
     const positions = _.shuffle(this.props.car.bubbles())
 
     const bubbles = this.props.car.trades.map((t, i) => {
-      return <SpeechBubble onClick={this.speechBubble} position={positions.shift()!} />
+      return <SpeechBubble key={`bubble-${i}`} onClick={this.speechBubble} position={positions.shift()!} />
     })
 
     return <div>
