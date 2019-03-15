@@ -1,5 +1,6 @@
 import { CacheEntry } from "./preloadMedia";
 import * as _ from 'lodash'
+import { UIPosition } from "./data";
 
 enum CarType {
   ObservationTable = "observation-table",
@@ -29,6 +30,11 @@ export class TrainCar {
 
   hasTrade(item: String): boolean {
     return !!this.trades.find(t => t.wants === item)
+  }
+
+  bubbles(): UIPosition[] {
+    const data = this.media()
+    return data.bubbles || []
   }
 
   media(): CacheEntry {

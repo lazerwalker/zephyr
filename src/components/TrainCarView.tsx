@@ -1,8 +1,9 @@
 import * as React from 'react'
-import Cinemagraph from './Cinemagraph';
 import { TrainCar } from '../train';
 import Arrow, { ArrowDirection } from './Arrow';
 import SpeechBubble from './SpeechBubble';
+
+import * as _ from 'lodash'
 
 interface Props {
   car: TrainCar
@@ -14,6 +15,7 @@ interface Props {
 
 export default class TrainCarView extends React.Component<Props> {
   render() {
+    console.log("BUBBLES", this.props.car.bubbles(), this.props.car)
     const forwardArrow = (this.props.car.front ? <Arrow onClick={this.moveForward} direction={ArrowDirection.Up} />
       : undefined)
     const backwardArrow = (this.props.car.rear ? <Arrow onClick={this.moveBackward} direction={ArrowDirection.Down} />
@@ -21,7 +23,7 @@ export default class TrainCarView extends React.Component<Props> {
     return <div>
       {forwardArrow}
       {backwardArrow}
-      <SpeechBubble onClick={this.speechBubble} />
+      <SpeechBubble onClick={this.speechBubble} position={_.sample(this.props.car.bubbles())!} />
     </div>
   }
 
