@@ -27,6 +27,10 @@ export class TrainCar {
     this.trades = trades
   }
 
+  hasTrade(item: String): boolean {
+    return !!this.trades.find(t => t.wants === item)
+  }
+
   media(): CacheEntry {
     return (window as any).cache[this.type.valueOf()]
   }
