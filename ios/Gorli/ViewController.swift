@@ -18,6 +18,7 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
                                       injectionTime: .atDocumentStart,
                                       forMainFrameOnly: true)
 
+
         let userContentController = WKUserContentController()
         userContentController.addUserScript(userScript)
 
