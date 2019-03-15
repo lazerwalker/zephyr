@@ -235,7 +235,8 @@ class App extends Component<{}, State> {
   }
 
   speechBubble = () => {
-    const human = new Human("Ben", "a USB key", "an apple")
+    const car = this.state.currentCar
+    const human = new Human("Ben", car.trades[0])
     this.setState({ playState: PlayState.TalkingWave, currentHuman: human })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(human.wave())

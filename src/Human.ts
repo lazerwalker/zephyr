@@ -1,4 +1,5 @@
 import { CacheEntry } from "./preloadMedia";
+import { Trade } from "./train";
 
 enum Animation {
   Angry = "angry",
@@ -15,10 +16,10 @@ export class Human {
 
   canTrade: Boolean = true
 
-  constructor(name: string, has: string, wants: string) {
+  constructor(name: string, trade: Trade) {
     this.name = name
-    this.wants = wants
-    this.has = has
+    this.wants = trade.wants
+    this.has = trade.has
   }
 
   trade(): string | undefined {

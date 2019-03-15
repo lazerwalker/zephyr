@@ -190,3 +190,7 @@ button.ask {
   bottom: 120px;
   width: 100%;  
 }
+
+.desire-wrapper {
+  bottom: 230px !important;
+}

@@ -16,7 +16,7 @@ export default class MenuView extends React.Component<Props> {
     if (this.props.human.canTrade) {
       return (
         <div className='menu-view'>
-          <div className="desire-wrapper">
+          <div className="desire-wrapper text-wrapper">
             <div className="desire">I would like {this.props.human.wants}, and have a {this.props.human.has}.</div>
           </div>
           <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
@@ -27,7 +27,7 @@ export default class MenuView extends React.Component<Props> {
     } else {
       return (
         <div className='menu-view'>
-          <div className="thanks-wrapper">
+          <div className="text-wrapper">
             <div className="thank-you">Thank you for the {this.props.human.wants}.</div>
           </div>
           <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
