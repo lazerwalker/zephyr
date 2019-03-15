@@ -160,8 +160,8 @@ This is (sigh) a media query that only triggers on iOS devices */
 button {
   position: absolute;
   bottom: 30px;
-  width: 400px;
-  margin-left: -200px;
+  width: 320px;
+  margin-left: -160px;
   height: 44px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   background-color: #E4D8D2;
