@@ -28,6 +28,7 @@ interface State {
 
   currentCar: TrainCar
   currentHuman?: Human
+  item: string
 }
 
 class App extends Component<{}, State> {
@@ -44,7 +45,8 @@ class App extends Component<{}, State> {
       currentCar: this.train.cars[0],
       playState: PlayState.Car,
       loaded: false,
-      loadingProgress: 0
+      loadingProgress: 0,
+      item: "optimism"
     }
   }
 
@@ -129,7 +131,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <MenuView goodbye={this.exitConversation} human={this.state.currentHuman!} />
+          <MenuView goodbye={this.exitConversation} human={this.state.currentHuman!} item={this.state.item} />
         </div>
       </div >
     }
