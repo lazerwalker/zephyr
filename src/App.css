@@ -180,7 +180,7 @@ button.ask {
   bottom: 80px;
 }
 
-.menu-view .desire, .menu-view .thank-you {
+.desire, .thank-you {
   background-color: #E4D8D2;
   margin: auto;
   padding-top: 10px;
@@ -189,13 +189,13 @@ button.ask {
   width: 100%;
 }
 
-.menu-view .thanks-wrapper {
+.thanks-wrapper {
   position: absolute;
   bottom: 80px;
   width: 100%;  
 }
 
-.menu-view .desire-wrapper {
+.desire-wrapper {
   position: absolute;
   bottom: 180px;
   width: 100%;

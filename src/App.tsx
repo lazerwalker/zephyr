@@ -9,6 +9,7 @@ import { Train, TrainCar } from './train';
 import { Human } from './Human';
 import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
+import AngryView from './components/AngryView';
 
 enum PlayState {
   NotStarted = 0,
@@ -118,7 +119,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <WaveView continue={this.waveToMenu} />
+          <WaveView continue={this.toMenu} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingMenu) {
@@ -135,6 +136,19 @@ class App extends Component<{}, State> {
             human={this.state.currentHuman!}
             item={this.state.item}
             trade={this.trade} />
+        </div>
+      </div >
+    } else if (this.state.playState === PlayState.TalkingSad) {
+      const video = this.state.currentHuman!.angry()
+
+      return <div className="App">
+        <div className="video-wrapper">
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <AngryView continue={this.toMenu} />
         </div>
       </div >
     }
@@ -164,16 +178,21 @@ class App extends Component<{}, State> {
 
   trade = () => {
     if (!this.state.currentHuman) return
-    if (this.state.currentHuman.wants !== this.state.item) return
-
-    const result = this.state.currentHuman.trade()
-    if (result) {
-      this.setState({ item: result })
+    if (this.state.currentHuman.wants === this.state.item) {
+      const result = this.state.currentHuman.trade()
+      if (result) {
+        this.setState({ item: result })
+      }
+    } else {
+      this.setState({ playState: PlayState.TalkingSad })
+      if (this.playerRef.current) {
+        this.playerRef.current.fadeTransition(this.state.currentHuman.angry())
+      }
     }
   }
 
   speechBubble = () => {
-    const human = new Human("Ben", "a USB key", "optimism")
+    const human = new Human("Ben", "a USB key", "an apple")
     this.setState({ playState: PlayState.TalkingWave, currentHuman: human })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(human.wave())
@@ -197,7 +216,7 @@ class App extends Component<{}, State> {
     }
   }
 
-  waveToMenu = () => {
+  toMenu = () => {
     this.setState({ playState: PlayState.TalkingMenu })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(this.state.currentHuman!.neutral())
