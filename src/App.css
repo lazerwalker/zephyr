@@ -38,10 +38,17 @@ a {
   transition: opacity 600ms ease-in-out;
 }
 
-.next-wrapper {
+.next-wrapper, .speech-wrapper {
   position: absolute;
   left: 50%;
   margin-left: -30px;
+}
+
+.speech-wrapper {
+  top: 50%;
+  margin-top: -30px;
+  left: 30%;
+  margin-left: 0;
 }
 
 .next-wrapper.down {
@@ -66,7 +73,7 @@ a {
   cursor: default;
 }
 
-.next {
+.next, .speech-bubble {
   background-color: clear;
   color: black;
   cursor: pointer;
@@ -148,4 +155,19 @@ This is (sigh) a media query that only triggers on iOS devices */
   #play-icon {
     margin-left: 14px;
   }
+}
+
+.wave-view {
+  position: relative;  
+  margin: auto;
+}
+
+button {
+  position: absolute;
+  bottom: 30px;
+  width: 400px;
+  margin-left: -190px;
+  height: 44px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: white;
 }

@@ -6,11 +6,18 @@ import preloadMedia, { CacheEntry } from './preloadMedia';
 import Levels from './data'
 import TrainCarView from './components/TrainCarView';
 import { Train, TrainCar } from './train';
+import { Human } from './Human';
+import WaveView from './components/WaveView';
 
 enum PlayState {
   NotStarted = 0,
-  Playing = 1,
-  Complete = 2,
+  Car,
+  TalkingWave,
+  TalkingMenu,
+  TalkingHappy,
+  TalkingSad,
+  TalkingForward,
+  TalkingBackward
 }
 
 interface State {
@@ -19,6 +26,7 @@ interface State {
   loadingProgress: number
 
   currentCar: TrainCar
+  currentHuman?: Human
 }
 
 class App extends Component<{}, State> {
@@ -33,7 +41,7 @@ class App extends Component<{}, State> {
     super(props)
     this.state = {
       currentCar: this.train.cars[0],
-      playState: PlayState.Playing,
+      playState: PlayState.Car,
       loaded: false,
       loadingProgress: 0
     }
@@ -76,25 +84,41 @@ class App extends Component<{}, State> {
       )
     }
 
-    const video = this.state.currentCar.media()
+    if (this.state.playState === PlayState.Car) {
+      const video = this.state.currentCar.media()
 
-    console.log("Loaded?")
-    return (
-      <div className="App" >
+      console.log("Loaded?")
+      return (
+        <div className="App" >
+          <div className="video-wrapper">
+            <Cinemagraph
+              media={this.cache[video.name]}
+              ref={this.playerRef}
+              onComplete={this.onComplete}>
+            </Cinemagraph >
+            <TrainCarView
+              car={this.state.currentCar}
+              moveForward={this.moveForward}
+              moveBackward={this.moveBackward}
+              speechBubble={this.speechBubble}
+            />
+          </div>
+        </div >
+      );
+    } else if (this.state.playState === PlayState.TalkingWave) {
+      const video = this.state.currentHuman!.wave()
+
+      return <div className="App">
         <div className="video-wrapper">
           <Cinemagraph
             media={this.cache[video.name]}
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <TrainCarView
-            car={this.state.currentCar}
-            moveForward={this.moveForward}
-            moveBackward={this.moveBackward}
-          />
+          <WaveView continue={this.exitWave} />
         </div>
       </div >
-    );
+    }
   }
 
   moveForward = () => {
@@ -119,8 +143,12 @@ class App extends Component<{}, State> {
     }
   }
 
-  startGame = () => {
-    this.setState({ playState: PlayState.Playing })
+  speechBubble = () => {
+    const human = new Human("Ben")
+    this.setState({ playState: PlayState.TalkingWave, currentHuman: human })
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(human.wave())
+    }
   }
 
   stopAudio = () => {
@@ -130,7 +158,14 @@ class App extends Component<{}, State> {
 
   onComplete = () => {
     console.log("Is complete!")
-    this.setState({ playState: PlayState.Complete })
+  }
+
+  exitWave = () => {
+    // TODO: This will change!
+    this.setState({ playState: PlayState.Car })
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(this.state.currentCar.media())
+    }
   }
 }
 
