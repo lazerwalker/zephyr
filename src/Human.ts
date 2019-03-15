@@ -10,9 +10,13 @@ enum Animation {
 
 export class Human {
   name: string
+  wants: string
+  has: string
 
-  constructor(name: string) {
+  constructor(name: string, has: string, wants: string) {
     this.name = name
+    this.wants = wants
+    this.has = has
   }
 
   wave(): CacheEntry {

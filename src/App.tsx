@@ -129,7 +129,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <MenuView goodbye={this.exitConversation} />
+          <MenuView goodbye={this.exitConversation} human={this.state.currentHuman!} />
         </div>
       </div >
     }
@@ -158,7 +158,7 @@ class App extends Component<{}, State> {
   }
 
   speechBubble = () => {
-    const human = new Human("Ben")
+    const human = new Human("Ben", "USB key", "banana")
     this.setState({ playState: PlayState.TalkingWave, currentHuman: human })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(human.wave())
