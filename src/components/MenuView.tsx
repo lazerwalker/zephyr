@@ -17,7 +17,7 @@ export default class MenuView extends React.Component<Props> {
       return (
         <div className='menu-view'>
           <div className="desire-wrapper text-wrapper">
-            <div className="desire">I would like {this.props.human.wants}, and have a {this.props.human.has}.</div>
+            <div className="desire">I would like {this.props.human.wants}, and have {this.props.human.has}.</div>
           </div>
           <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
           <Button className='ask' onClick={this.ask}>Who is looking for {this.props.item}?</Button>
