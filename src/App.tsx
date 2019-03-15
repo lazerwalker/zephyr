@@ -10,6 +10,7 @@ import { Human } from './Human';
 import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
 import AngryView from './components/AngryView';
+import PointView from './components/PointView';
 
 enum PlayState {
   NotStarted = 0,
@@ -132,10 +133,13 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <MenuView goodbye={this.exitConversation}
+          <MenuView
             human={this.state.currentHuman!}
             item={this.state.item}
-            trade={this.trade} />
+            trade={this.trade}
+            ask={this.ask}
+            goodbye={this.exitConversation}
+          />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingSad) {
@@ -149,6 +153,32 @@ class App extends Component<{}, State> {
             onComplete={this.onComplete}>
           </Cinemagraph >
           <AngryView continue={this.toMenu} />
+        </div>
+      </div >
+    } else if (this.state.playState === PlayState.TalkingForward) {
+      const video = this.state.currentHuman!.towards()
+
+      return <div className="App">
+        <div className="video-wrapper">
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <PointView continue={this.toMenu} />
+        </div>
+      </div >
+    } else if (this.state.playState === PlayState.TalkingBackward) {
+      const video = this.state.currentHuman!.behind()
+
+      return <div className="App">
+        <div className="video-wrapper">
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <PointView continue={this.toMenu} />
         </div>
       </div >
     }
@@ -188,6 +218,19 @@ class App extends Component<{}, State> {
       if (this.playerRef.current) {
         this.playerRef.current.fadeTransition(this.state.currentHuman.angry())
       }
+    }
+  }
+
+  ask = () => {
+    if (!this.state.currentHuman) { return }
+
+    const forward = (Math.random() > 0.5)
+    let state = (forward ? PlayState.TalkingForward : PlayState.TalkingBackward)
+
+    this.setState({ playState: state })
+    if (this.playerRef.current) {
+      let animation = (forward ? this.state.currentHuman.towards() : this.state.currentHuman.behind())
+      this.playerRef.current.fadeTransition(animation)
     }
   }
 

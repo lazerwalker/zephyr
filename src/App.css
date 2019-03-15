@@ -166,7 +166,7 @@ This is (sigh) a media query that only triggers on iOS devices */
   }
 }
 
-.wave-view {
+.wave-view, .point-view {
   position: relative;  
   margin: auto;
 }
