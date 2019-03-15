@@ -102,20 +102,6 @@ a {
   transform: rotate(90deg);
 }
 
-.text {
-  background-color: #E4D8D2;
-  box-sizing: border-box;
-  font-size: 20px;
-  line-height: 45px;
-  padding-top: 30px;
-  text-align: center;
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100px;
-  width: 100%;
-}
-
 #menu {
   position: absolute;
   top: 0px;
@@ -166,7 +152,7 @@ This is (sigh) a media query that only triggers on iOS devices */
   }
 }
 
-.wave-view, .point-view {
+.dialog {
   position: relative;  
   margin: auto;
 }
@@ -189,7 +175,7 @@ button.ask {
   bottom: 80px;
 }
 
-.desire, .thank-you {
+.desire, .thank-you, .text {
   background-color: #E4D8D2;
   margin: auto;
   padding-top: 10px;
@@ -198,7 +184,7 @@ button.ask {
   width: 100%;
 }
 
-.thanks-wrapper {
+.text-wrapper {
   position: absolute;
   bottom: 80px;
   width: 100%;  

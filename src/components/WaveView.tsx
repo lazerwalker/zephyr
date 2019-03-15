@@ -12,7 +12,10 @@ interface Props {
 export default class WaveView extends React.Component<Props> {
   render() {
     return (
-      <div className='wave-view'>
+      <div className='wave-view dialog'>
+        <div className="text-wrapper">
+          <div className="text">Greetings!</div>
+        </div>
         <Button onClick={this.continue}>Hello!</Button>
       </div>
     )
