@@ -8,6 +8,7 @@ import TrainCarView from './components/TrainCarView';
 import { Train, TrainCar } from './train';
 import { Human } from './Human';
 import WaveView from './components/WaveView';
+import MenuView from './components/MenuView';
 
 enum PlayState {
   NotStarted = 0,
@@ -115,7 +116,20 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <WaveView continue={this.exitWave} />
+          <WaveView continue={this.waveToMenu} />
+        </div>
+      </div >
+    } else if (this.state.playState === PlayState.TalkingMenu) {
+      const video = this.state.currentHuman!.neutral()
+
+      return <div className="App">
+        <div className="video-wrapper">
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <MenuView goodbye={this.exitConversation} />
         </div>
       </div >
     }
@@ -160,11 +174,18 @@ class App extends Component<{}, State> {
     console.log("Is complete!")
   }
 
-  exitWave = () => {
+  exitConversation = () => {
     // TODO: This will change!
     this.setState({ playState: PlayState.Car })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(this.state.currentCar.media())
+    }
+  }
+
+  waveToMenu = () => {
+    this.setState({ playState: PlayState.TalkingMenu })
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(this.state.currentHuman!.neutral())
     }
   }
 }
