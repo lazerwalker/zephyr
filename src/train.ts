@@ -2,7 +2,7 @@ import { CacheEntry } from "./preloadMedia";
 
 enum CarType {
   ObservationTable = "observation-table",
-  ObservationLookout = "observation-lookout",
+  ObservationLookout = "Ben/angry",
   Cafe = "cafe",
   Dining = "dining",
   Sleeper = "sleeper"
@@ -14,7 +14,8 @@ export class TrainCar {
   front?: TrainCar
   rear?: TrainCar
 
-  constructor(type: CarType) {
+  // This default exists because this is a jam game and I'm too lazy to make TypeScript properly happy
+  constructor(type: CarType = CarType.ObservationLookout) {
     this.type = type
     console.log(type.valueOf())
   }
@@ -28,17 +29,18 @@ export class Train {
   cars: TrainCar[] = []
 
   static generate() {
-    const addCarToRear = (cars: TrainCar[], car: TrainCar) => {
+    const addCarToFront = (cars: TrainCar[], car: TrainCar) => {
       if (cars.length > 0) {
-        cars[cars.length - 1].rear = car;
-        car.front = cars[cars.length - 1];
+        cars[cars.length - 1].front = car;
+        car.rear = cars[cars.length - 1];
       }
       cars.push(car)
     }
 
     var cars: TrainCar[] = []
     for (let i = 0; i < 5; i++) {
-      addCarToRear(cars, new TrainCar(CarType.ObservationTable))
+      addCarToFront(cars, new TrainCar(CarType.ObservationTable))
+      addCarToFront(cars, new TrainCar(CarType.ObservationLookout))
     }
 
     return new Train(cars)

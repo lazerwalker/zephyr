@@ -5,7 +5,7 @@ import preloadMedia, { CacheEntry } from './preloadMedia';
 
 import Levels from './data'
 import TrainCarView from './components/TrainCarView';
-import { Train } from './train';
+import { Train, TrainCar } from './train';
 
 enum PlayState {
   NotStarted = 0,
@@ -14,10 +14,11 @@ enum PlayState {
 }
 
 interface State {
-  index: number
   playState: PlayState
   loaded: boolean
   loadingProgress: number
+
+  currentCar: TrainCar
 }
 
 class App extends Component<{}, State> {
@@ -31,7 +32,7 @@ class App extends Component<{}, State> {
   constructor(props: any) {
     super(props)
     this.state = {
-      index: -1,
+      currentCar: this.train.cars[0],
       playState: PlayState.Playing,
       loaded: false,
       loadingProgress: 0
@@ -57,9 +58,6 @@ class App extends Component<{}, State> {
       (window as any).cache = cache
       this.cache = cache
       this.setState({ loaded: true })
-
-      const video = Levels[0]
-      const media = this.cache[video.name]
     })
   }
 
@@ -78,14 +76,47 @@ class App extends Component<{}, State> {
       )
     }
 
+    const video = this.state.currentCar.media()
+
     console.log("Loaded?")
     return (
       <div className="App" >
         <div className="video-wrapper">
-          <TrainCarView car={this.train.cars[0]} />
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <TrainCarView
+            car={this.state.currentCar}
+            moveForward={this.moveForward}
+            moveBackward={this.moveBackward}
+          />
         </div>
       </div >
     );
+  }
+
+  moveForward = () => {
+    const nextCar = this.state.currentCar.front
+    if (!nextCar) return;
+
+    this.setState({ currentCar: nextCar })
+
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(nextCar.media())
+    }
+  }
+
+  moveBackward = () => {
+    const nextCar = this.state.currentCar.rear
+    if (!nextCar) return
+
+    this.setState({ currentCar: nextCar })
+
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(nextCar.media())
+    }
   }
 
   startGame = () => {
