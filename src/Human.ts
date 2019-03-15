@@ -13,10 +13,17 @@ export class Human {
   wants: string
   has: string
 
+  canTrade: Boolean = true
+
   constructor(name: string, has: string, wants: string) {
     this.name = name
     this.wants = wants
     this.has = has
+  }
+
+  trade(): string | undefined {
+    this.canTrade = false
+    return this.has
   }
 
   wave(): CacheEntry {

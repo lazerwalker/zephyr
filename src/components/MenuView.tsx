@@ -13,16 +13,27 @@ interface Props {
 
 export default class MenuView extends React.Component<Props> {
   render() {
-    return (
-      <div className='menu-view'>
-        <div className="desire-wrapper">
-          <div className="desire">I would like a {this.props.human.wants}, and have a {this.props.human.has}.</div>
+    if (this.props.human.canTrade) {
+      return (
+        <div className='menu-view'>
+          <div className="desire-wrapper">
+            <div className="desire">I would like {this.props.human.wants}, and have a {this.props.human.has}.</div>
+          </div>
+          <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
+          <Button className='ask' onClick={this.ask}>Who wants my {this.props.item}?</Button>
+          <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
         </div>
-        <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
-        <Button className='ask' onClick={this.ask}>Who wants my {this.props.item}?</Button>
-        <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className='menu-view'>
+          <div className="thanks-wrapper">
+            <div className="thank-you">Thank you for the {this.props.human.wants}.</div>
+          </div>
+          <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
+        </div>
+      )
+    }
   }
 
   trade = () => {

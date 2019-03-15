@@ -131,7 +131,10 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <MenuView goodbye={this.exitConversation} human={this.state.currentHuman!} item={this.state.item} />
+          <MenuView goodbye={this.exitConversation}
+            human={this.state.currentHuman!}
+            item={this.state.item}
+            trade={this.trade} />
         </div>
       </div >
     }
@@ -159,8 +162,18 @@ class App extends Component<{}, State> {
     }
   }
 
+  trade = () => {
+    if (!this.state.currentHuman) return
+    if (this.state.currentHuman.wants !== this.state.item) return
+
+    const result = this.state.currentHuman.trade()
+    if (result) {
+      this.setState({ item: result })
+    }
+  }
+
   speechBubble = () => {
-    const human = new Human("Ben", "USB key", "banana")
+    const human = new Human("Ben", "a USB key", "optimism")
     this.setState({ playState: PlayState.TalkingWave, currentHuman: human })
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(human.wave())
