@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Cinemagraph from './Cinemagraph';
 import { TrainCar } from '../train';
-import Arrow from './Arrow';
+import Arrow, { ArrowDirection } from './Arrow';
 
 interface Props {
   car: TrainCar
@@ -14,7 +14,8 @@ export default class TrainCarView extends React.Component<Props> {
   render() {
     console.log(this.props.car)
     return <div>
-      <Arrow onClick={this.moveForward} />
+      <Arrow onClick={this.moveForward} direction={ArrowDirection.Up} />
+      <Arrow onClick={this.moveBackward} direction={ArrowDirection.Down} />
     </div>
   }
 
