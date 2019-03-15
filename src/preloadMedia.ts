@@ -22,7 +22,7 @@ export default function preloadMedia(media: Media[], skipPreload: boolean = fals
 
   const videoEl = document.createElement('video')
   const supportsWebm = (videoEl.canPlayType('video/webm') != '')
-  const videoExtension = (supportsWebm ? "webm" : "mp4")
+  const videoExtension = "mp4" // (supportsWebm ? "webm" : "mov")
   const videoType = `video/${videoExtension}`
 
   let sources: CacheEntry[] = media.map((m) => {

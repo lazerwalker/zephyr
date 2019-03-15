@@ -8,66 +8,23 @@ export interface Media {
 
 const data: Media[] = [
   {
-    name: "title",
-    ignore: true
+    name: "observation-table"
   },
   {
-    name: "headphones",
-    text: "this experience requires sound.",
-    noAudio: true
+    name: "Ben/angry"
   },
   {
-    name: "bed",
+    name: "Ben/neutral"
   },
   {
-    name: "shower",
+    name: "Ben/wave"
   },
   {
-    name: "street",
+    name: "Ben/towards"
   },
   {
-    name: "parks",
+    name: "Ben/behind"
   },
-  {
-    name: "plaque",
-  },
-  {
-    name: "garbagedump"
-  },
-  {
-    name: "slide",
-  },
-  {
-    name: "bench",
-  },
-  {
-    name: "fountain",
-  },
-  {
-    name: "drugdealers",
-  },
-  {
-    name: "dolores",
-  },
-  {
-    name: "urethra",
-  },
-  {
-    name: "forest",
-  },
-  {
-    name: "forest2",
-    noAudio: true
-  },
-  {
-    name: "canal",
-  },
-  {
-    name: "slidetop",
-  },
-  {
-    name: "poem",
-  }
 ]
 
 export default data
