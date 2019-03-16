@@ -6,6 +6,7 @@ import { Human } from "./Human";
 enum CarType {
   ObservationTable = "observation-table",
   ObservationLookout = "observation-lookout",
+  Sound = "sound-room",
   Cafe = "cafe",
   Dining = "dining",
   Sleeper = "sleeper"
@@ -67,12 +68,22 @@ export class Train {
 
     const humans = _.shuffle(names);
 
+    let lastType: CarType | undefined
+    let usedSoundRoom = false
+
     while (cycle.length > 0) {
-      let type = (cars.length % 2 === 0 ? CarType.ObservationLookout : CarType.ObservationTable)
+      let type: CarType = (lastType == CarType.ObservationTable ? CarType.ObservationLookout : CarType.ObservationTable)
+
+      if (cars.length > 0 && !usedSoundRoom && _.random(0, cycle.length) === 0) {
+        usedSoundRoom = true
+        type = CarType.Sound
+      }
+
+      lastType = type
+
       const car = new TrainCar(type, [cycle.shift()!], humans.shift()!)
       addCarToFront(cars, car)
     }
-    console.log(cars)
 
     return new Train(cars)
   }
@@ -85,8 +96,6 @@ export class Train {
       "coffee",
       "healthy snack"
     ]
-
-    let complete = false
 
     let trades: Trade[] = []
 
