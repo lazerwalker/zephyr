@@ -1,9 +1,9 @@
 import { CacheEntry } from "./preloadMedia";
-import * as _ from 'lodash'
-import { UIPosition, names } from "./data";
+import _ from 'lodash';
+import { UIPosition, people } from "./data";
 import { Human } from "./Human";
 
-enum CarType {
+export enum CarType {
   ObservationTable = "observation-table",
   ObservationLookout = "observation-lookout",
   Sound = "sound-room",
@@ -66,7 +66,7 @@ export class Train {
 
     var cars: TrainCar[] = []
 
-    const humans = _.shuffle(names);
+    const humans = _.groupBy(_.shuffle(people), _.property("room"))
 
     let lastType: CarType | undefined
     let usedSoundRoom = false
@@ -81,7 +81,7 @@ export class Train {
 
       lastType = type
 
-      const car = new TrainCar(type, [cycle.shift()!], humans.shift()!)
+      const car = new TrainCar(type, [cycle.shift()!], humans[type].shift()!.name)
       addCarToFront(cars, car)
     }
 

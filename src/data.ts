@@ -1,3 +1,5 @@
+import { CarType } from "./train";
+
 export interface Media {
   name: string
   bubbles?: UIPosition[]
@@ -38,23 +40,76 @@ let data: Media[] = [
   }
 ]
 
-export const names = [
-  "Adina",
-  "Alexei",
-  "Ali",
-  "Ben",
-  "ChrisSmith",
-  "Jerry",
-  "JoeBunda",
-  "Josie",
-  "Keir",
-  "Kristi",
-  "Lenn",
-  "Maize",
-  "Miguel",
-  "Plum",
-  "Robin",
-  "Sergio"
+interface PersonRoom {
+  name: string,
+  room: CarType
+}
+
+export const people: PersonRoom[] = [
+  {
+    name: "Adina",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Alexei",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Ali",
+    room: CarType.Sound
+  },
+  {
+    name: "Ben",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "ChrisSmith",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Jerry",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "JoeBunda",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Josie",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Keir",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Kristi",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Lenn",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Maize",
+    room: CarType.Sound
+  },
+  {
+    name: "Miguel",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Plum",
+    room: CarType.Sound
+  },
+  {
+    name: "Robin",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Sergio",
+    room: CarType.ObservationTable
+  }
 ]
 
 export const emotes = [
@@ -66,10 +121,10 @@ export const emotes = [
   "angry"
 ]
 
-names.forEach(p => {
+people.forEach(p => {
   emotes.forEach(e => {
     data.push({
-      name: `${p}-${e}`
+      name: `${p.name}-${e}`
     })
   })
 })
