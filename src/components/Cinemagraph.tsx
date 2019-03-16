@@ -53,11 +53,11 @@ export default class Cinemagraph extends React.Component<Props> {
 
     setTimeout(() => {
       this.videoRef.current!.classList.remove('fade')
-    }, 300)
+    }, 0)
 
     setTimeout(() => {
       this.loadVideo(media)
-    }, 300)
+    }, 0)
   }
 
   public fadeOut(callback: (() => void)) {
@@ -66,7 +66,7 @@ export default class Cinemagraph extends React.Component<Props> {
     }
 
     this.videoRef.current.classList.add('fade')
-    setTimeout(callback, 300)
+    setTimeout(callback, 0)
   }
 
   public loadVideo(media: CacheEntry) {

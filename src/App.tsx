@@ -12,6 +12,7 @@ import MenuView from './components/MenuView';
 import AngryView from './components/AngryView';
 import PointView from './components/PointView';
 import _ from 'lodash';
+import HappyView from './components/HappyView';
 
 enum PlayState {
   NotStarted = 0,
@@ -156,6 +157,19 @@ class App extends Component<{}, State> {
           <AngryView continue={this.toMenu} />
         </div>
       </div >
+    } else if (this.state.playState === PlayState.TalkingHappy) {
+      const video = this.state.currentHuman!.happy()
+
+      return <div className="App">
+        <div className="video-wrapper">
+          <Cinemagraph
+            media={this.cache[video.name]}
+            ref={this.playerRef}
+            onComplete={this.onComplete}>
+          </Cinemagraph >
+          <HappyView continue={this.exitConversation} />
+        </div>
+      </div >
     } else if (this.state.playState === PlayState.TalkingForward) {
       const video = this.state.currentHuman!.towards()
 
@@ -212,7 +226,10 @@ class App extends Component<{}, State> {
     if (this.state.currentHuman.wants === this.state.item) {
       const result = this.state.currentHuman.trade()
       if (result) {
-        this.setState({ item: result })
+        this.setState({ item: result, playState: PlayState.TalkingHappy })
+        if (this.playerRef.current) {
+          this.playerRef.current.fadeTransition(this.state.currentHuman.happy())
+        }
       }
     } else {
       this.setState({ playState: PlayState.TalkingSad })

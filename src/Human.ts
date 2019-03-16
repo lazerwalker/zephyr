@@ -6,7 +6,8 @@ enum Animation {
   Behind = "towards",
   Towards = "behind",
   Neutral = "neutral",
-  Wave = "wave"
+  Wave = "wave",
+  Happy = "happy"
 }
 
 export class Human {
@@ -33,6 +34,10 @@ export class Human {
 
   angry(): CacheEntry {
     return (window as any).cache[`${this.name}-${Animation.Angry.valueOf()}`]
+  }
+
+  happy(): CacheEntry {
+    return (window as any).cache[`${this.name}-${Animation.Happy.valueOf()}`]
   }
 
   behind(): CacheEntry {
