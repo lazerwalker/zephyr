@@ -142,113 +142,58 @@ class App extends Component<{}, State> {
       )
     }
 
+    let customView;
+    let media;
+
     if (this.state.playState === PlayState.Car) {
-      const video = this.state.currentCar.media()
-
-      console.log("Loaded?")
-      return (
-        <div className="App" >
-          <div className="video-wrapper">
-            <Cinemagraph
-              media={this.cache[video.name]}
-              ref={this.playerRef}
-              onComplete={this.onComplete}>
-            </Cinemagraph >
-            <TrainCarView
-              car={this.state.currentCar}
-              moveForward={this.moveForward}
-              moveBackward={this.moveBackward}
-              speechBubble={this.speechBubble}
-            />
-          </div>
-        </div >
-      );
+      media = this.state.currentCar.media()
+      customView = <TrainCarView
+        car={this.state.currentCar}
+        moveForward={this.moveForward}
+        moveBackward={this.moveBackward}
+        speechBubble={this.speechBubble}
+      />
     } else if (this.state.playState === PlayState.TalkingWave) {
-      const video = this.state.currentHuman!.wave()
-
-      return <div className="App">
-        <div className="video-wrapper">
-          <Cinemagraph
-            media={this.cache[video.name]}
-            ref={this.playerRef}
-            onComplete={this.onComplete}>
-          </Cinemagraph >
-          <WaveView continue={this.toMenu} language={this.state.language} />
-        </div>
-      </div >
+      media = this.state.currentHuman!.wave()
+      customView = <WaveView continue={this.toMenu} language={this.state.language} />
     } else if (this.state.playState === PlayState.TalkingMenu) {
-      const video = this.state.currentHuman!.neutral()
-
-      return <div className="App">
-        <div className="video-wrapper">
-          <Cinemagraph
-            media={this.cache[video.name]}
-            ref={this.playerRef}
-            onComplete={this.onComplete}>
-          </Cinemagraph >
-          <MenuView
-            human={this.state.currentHuman!}
-            item={this.state.item}
-            trade={this.trade}
-            ask={this.ask}
-            goodbye={this.exitConversation}
-            language={this.state.language}
-          />
-        </div>
-      </div >
+      media = this.state.currentHuman!.neutral()
+      customView = <MenuView
+        human={this.state.currentHuman!}
+        item={this.state.item}
+        trade={this.trade}
+        ask={this.ask}
+        goodbye={this.exitConversation}
+        language={this.state.language}
+      />
     } else if (this.state.playState === PlayState.TalkingSad) {
-      const video = this.state.currentHuman!.angry()
-
-      return <div className="App">
-        <div className="video-wrapper">
-          <Cinemagraph
-            media={this.cache[video.name]}
-            ref={this.playerRef}
-            onComplete={this.onComplete}>
-          </Cinemagraph >
-          <AngryView continue={this.toMenu} language={this.state.language} item={this.state.item} />
-        </div>
-      </div >
+      media = this.state.currentHuman!.angry()
+      customView = <AngryView continue={this.toMenu} language={this.state.language} item={this.state.item} />
     } else if (this.state.playState === PlayState.TalkingHappy) {
-      const video = this.state.currentHuman!.happy()
-
-      return <div className="App">
-        <div className="video-wrapper">
-          <Cinemagraph
-            media={this.cache[video.name]}
-            ref={this.playerRef}
-            onComplete={this.onComplete}>
-          </Cinemagraph >
-          <HappyView continue={this.exitConversation} language={this.state.language} />
-        </div>
-      </div >
+      media = this.state.currentHuman!.happy()
+      customView = <HappyView continue={this.exitConversation} language={this.state.language} />
     } else if (this.state.playState === PlayState.TalkingForward) {
-      const video = this.state.currentHuman!.towards()
-
-      return <div className="App">
-        <div className="video-wrapper">
-          <Cinemagraph
-            media={this.cache[video.name]}
-            ref={this.playerRef}
-            onComplete={this.onComplete}>
-          </Cinemagraph >
-          <PointView continue={this.toMenu} isForward={true} language={this.state.language} />
-        </div>
-      </div >
+      media = this.state.currentHuman!.towards()
+      customView = <PointView continue={this.toMenu} isForward={true} language={this.state.language} />
     } else if (this.state.playState === PlayState.TalkingBackward) {
-      const video = this.state.currentHuman!.behind()
+      media = this.state.currentHuman!.behind()
+      customView = <PointView continue={this.toMenu} isForward={false} language={this.state.language} />
+    }
 
-      return <div className="App">
+    if (!media) { return <div /> }
+
+    return (
+      <div className="App">
         <div className="video-wrapper">
           <Cinemagraph
-            media={this.cache[video.name]}
+            media={this.cache[media.name]}
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <PointView continue={this.toMenu} isForward={false} language={this.state.language} />
+          {customView}
         </div>
       </div >
-    }
+    )
   }
 
   moveForward = () => {
