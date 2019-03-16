@@ -14,10 +14,12 @@ export class Human {
   name: string
   wants: string
   has: string
+  desiredTrade: Trade
 
   canTrade: Boolean = true
 
   constructor(name: string, trade: Trade) {
+    this.desiredTrade = trade
     this.name = name
     this.wants = trade.wants
     this.has = trade.has

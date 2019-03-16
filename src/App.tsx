@@ -13,6 +13,7 @@ import AngryView from './components/AngryView';
 import PointView from './components/PointView';
 import _ from 'lodash';
 import HappyView from './components/HappyView';
+import Language from './language';
 
 enum PlayState {
   NotStarted = 0,
@@ -33,7 +34,11 @@ interface State {
   currentCar: TrainCar
   currentHuman?: Human
   item: string
+
+  language: Language
 }
+
+export const LanguageContext = React.createContext(new Language())
 
 class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
@@ -50,7 +55,8 @@ class App extends Component<{}, State> {
       playState: PlayState.Car,
       loaded: false,
       loadingProgress: 0,
-      item: "optimism"
+      item: "optimism",
+      language: new Language()
     }
   }
 
@@ -122,7 +128,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <WaveView continue={this.toMenu} />
+          <WaveView continue={this.toMenu} language={this.state.language} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingMenu) {
@@ -141,6 +147,7 @@ class App extends Component<{}, State> {
             trade={this.trade}
             ask={this.ask}
             goodbye={this.exitConversation}
+            language={this.state.language}
           />
         </div>
       </div >
@@ -154,7 +161,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <AngryView continue={this.toMenu} />
+          <AngryView continue={this.toMenu} language={this.state.language} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingHappy) {
@@ -167,7 +174,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <HappyView continue={this.exitConversation} />
+          <HappyView continue={this.exitConversation} language={this.state.language} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingForward) {
@@ -180,7 +187,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <PointView continue={this.toMenu} />
+          <PointView continue={this.toMenu} isForward={true} language={this.state.language} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingBackward) {
@@ -193,7 +200,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <PointView continue={this.toMenu} />
+          <PointView continue={this.toMenu} isForward={false} language={this.state.language} />
         </div>
       </div >
     }

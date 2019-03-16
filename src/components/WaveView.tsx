@@ -1,12 +1,10 @@
 import * as React from 'react'
-import Cinemagraph from './Cinemagraph';
-import { TrainCar } from '../train';
-import Arrow, { ArrowDirection } from './Arrow';
-import SpeechBubble from './SpeechBubble';
 import Button from './Button';
+import Language from '../language';
 
 interface Props {
   continue: any;
+  language: Language
 }
 
 export default class WaveView extends React.Component<Props> {
@@ -14,7 +12,7 @@ export default class WaveView extends React.Component<Props> {
     return (
       <div className='wave-view dialog'>
         <div className="text-wrapper">
-          <div className="text">Greetings!</div>
+          <div className="text">{this.props.language.greetings()}</div>
         </div>
         <Button onClick={this.continue}>Hello!</Button>
       </div>

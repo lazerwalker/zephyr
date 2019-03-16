@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Button from './Button';
 import { Human } from '../Human';
+import Language from '../language';
 
 interface Props {
   human: Human
@@ -9,6 +10,8 @@ interface Props {
   trade?: any;
   ask?: any;
   goodbye?: any;
+
+  language: Language
 }
 
 export default class MenuView extends React.Component<Props> {
@@ -17,7 +20,7 @@ export default class MenuView extends React.Component<Props> {
       return (
         <div className='menu-view'>
           <div className="desire-wrapper text-wrapper">
-            <div className="desire">I would like {this.props.human.wants}, and have {this.props.human.has}.</div>
+            <div className="desire" dangerouslySetInnerHTML={{ __html: this.props.language.tradeDeclaration(this.props.human.desiredTrade) }} />
           </div>
           <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
           <Button className='ask' onClick={this.ask}>Who is looking for {this.props.item}?</Button>
