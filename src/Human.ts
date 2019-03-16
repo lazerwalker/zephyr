@@ -23,7 +23,7 @@ export class Human {
     this.desiredTrade = trade
     this.name = name
 
-    this.voice = _.sample(["Char3", "Char6"])!
+    this.voice = _.sample(["Char2", "Char3", "Char5", "Char6"])!
   }
 
   trade(): Item | undefined {
