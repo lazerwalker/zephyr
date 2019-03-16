@@ -1,15 +1,12 @@
 import { Trade } from './train'
 import _ from 'lodash';
-import { workerData } from 'worker_threads';
 
 export default class Language {
-  uppercaseConsonants = "ÇÐÑĆĈĊČĎĐĜĞĠĢĤĦĴĶĹŅŇĻŔŘŜŞŠŴŤŹŽŻŦŢŚŖĿĽŃ§ƁƆƇƉƊƤƑƓƘƜƝƔƦƧƩƪƬƮƲƵ".split("")
-  lowercaseConsonants = "ðÞñćĉċčďđĝğġģĥħĵķĺþĸņňŋļľŀłńŕŗřśŝŵźżžşšţťŧƿƄƅƈƌſƗƒƃƍƕƙƚƛƞƥƨƫƭ".split("")
+  uppercaseConsonants = "ÇÐÑĆϾҊҨϿӜĈĊČĎϢĐϨĜĞĠĢĤĦĴĶĹŅŇĻŔŘŜŞŠŴŤŹŽŻŦŢŚŖĿĽŃ§ƁƆƇƉƊƤƑƓƘƜƝƔƦƧƩƪƬƮƲƵ".split("")
+  lowercaseConsonants = "ðÞñćĉќѝċčгдҩďӝﬠאּđĝğġϣģϩĥħĵķĺþĸņňŋļľŀłńŕŗřśŝŵźżžşšţťŧƿƄƅƈƌſƗƒƃƍƕƙƚƛƞƥƨƫƭ".split("")
 
-  uppercaseVowels = "ÁÂÃÄÅÆÈÉÊËÌÍÎÏÒÓÔÕÖÙĮÚÛÜÝĂĄĒĔĖĘĚĨĪĬİ¥ŎŒŨŪŬŰŲŮŶŸŐŌƂƋƎƖƟƏƐƠƢƯƱƳ".split("")
-  lowercaseVowels = "àáâãäåæçèéêëìįíîïòóôõöùúûüýÿāăąēĕėęěĩīĭıōŏőœũūŭůűųŷơƣưƴ".split("")
-
-  wordMap: { [type: string]: string } = {}
+  uppercaseVowels = "ÁÂÃÄÅÆÈÉÊËÌÍÎÏÒϘÓѦÔÕÖÙĮÚÛÜÝĂĄĒĔĖĘĚĨĪĬİ¥ŎŒŨŪŬŰŲŮŶŸŐŌƂƋƎƖƟƏƐƠƢƯƱƳ".split("")
+  lowercaseVowels = "àáâãäåæçèéêўзëìеѧįәíфϙîïòóҽôõöùúûüýÿāăąēĕėęěĩīĭıōŏőœũūŭůűųŷơƣưƴ".split("")
 
   npcGreeting: string
   menuGreeting: string
