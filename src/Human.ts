@@ -3,8 +3,8 @@ import { Trade } from "./train";
 
 enum Animation {
   Angry = "angry",
-  Behind = "behind",
-  Towards = "towards",
+  Behind = "towards",
+  Towards = "behind",
   Neutral = "neutral",
   Wave = "wave"
 }
