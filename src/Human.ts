@@ -28,23 +28,23 @@ export class Human {
   }
 
   wave(): CacheEntry {
-    return (window as any).cache[`${this.name}/${Animation.Wave.valueOf()}`]
+    return (window as any).cache[`${this.name}-${Animation.Wave.valueOf()}`]
   }
 
   angry(): CacheEntry {
-    return (window as any).cache[`${this.name}/${Animation.Angry.valueOf()}`]
+    return (window as any).cache[`${this.name}-${Animation.Angry.valueOf()}`]
   }
 
   behind(): CacheEntry {
-    return (window as any).cache[`${this.name}/${Animation.Behind.valueOf()}`]
+    return (window as any).cache[`${this.name}-${Animation.Behind.valueOf()}`]
   }
 
   neutral(): CacheEntry {
-    return (window as any).cache[`${this.name}/${Animation.Neutral.valueOf()}`]
+    return (window as any).cache[`${this.name}-${Animation.Neutral.valueOf()}`]
   }
 
   towards(): CacheEntry {
-    return (window as any).cache[`${this.name}/${Animation.Towards.valueOf()}`]
+    return (window as any).cache[`${this.name}-${Animation.Towards.valueOf()}`]
   }
 
 }

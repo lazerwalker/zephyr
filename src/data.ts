@@ -11,7 +11,7 @@ export interface UIPosition {
   y: string
 }
 
-const data: Media[] = [
+let data: Media[] = [
   {
     name: "observation-table",
     bubbles: [
@@ -27,25 +27,43 @@ const data: Media[] = [
       { x: "60%", y: "25%" },
       { x: "40%", y: "23%" }
     ]
-  },
-  {
-    name: "Ben/angry"
-  },
-  {
-    name: "Ben/neutral"
-  },
-  {
-    name: "Ben/wave"
-  },
-  {
-    name: "Ben/towards"
-  },
-  {
-    name: "Ben/behind"
-  },
-  {
-    name: "items/pen"
   }
 ]
+
+export const names = [
+  "Adina",
+  "Alexei",
+  "Ali",
+  "Ben",
+  "ChrisSmith",
+  "Jerry",
+  "JoeBunda",
+  "Josie",
+  "Keir",
+  "Kristi",
+  "Lenn",
+  "Maize",
+  "Miguel",
+  "Plum",
+  "Robin",
+  "Sergio"
+]
+
+export const emotes = [
+  "behind",
+  "towards",
+  "happy",
+  "wave",
+  "neutral",
+  "angry"
+]
+
+names.forEach(p => {
+  emotes.forEach(e => {
+    data.push({
+      name: `${p}-${e}`
+    })
+  })
+})
 
 export default data

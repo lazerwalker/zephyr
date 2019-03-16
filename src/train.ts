@@ -1,6 +1,6 @@
 import { CacheEntry } from "./preloadMedia";
 import * as _ from 'lodash'
-import { UIPosition } from "./data";
+import { UIPosition, names } from "./data";
 import { Human } from "./Human";
 
 enum CarType {
@@ -30,7 +30,7 @@ export class TrainCar {
     this.type = type
     this.trades = trades
 
-    this.human = new Human("Ben", trades[0])
+    this.human = new Human(_.sample(names)!, trades[0])
   }
 
   hasTrade(item: String): boolean {
