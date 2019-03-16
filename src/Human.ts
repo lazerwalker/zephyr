@@ -1,5 +1,6 @@
 import { CacheEntry } from "./preloadMedia";
 import { Trade } from "./train";
+import _ from "lodash";
 
 enum Animation {
   Angry = "angry",
@@ -12,9 +13,11 @@ enum Animation {
 
 export class Human {
   name: string
+  voice: string
+
+  desiredTrade: Trade
   wants: string
   has: string
-  desiredTrade: Trade
 
   canTrade: Boolean = true
 
@@ -23,6 +26,8 @@ export class Human {
     this.name = name
     this.wants = trade.wants
     this.has = trade.has
+
+    this.voice = _.sample(["Char3", "Char6"])!
   }
 
   trade(): string | undefined {

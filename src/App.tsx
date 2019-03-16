@@ -85,6 +85,41 @@ class App extends Component<{}, State> {
     })
   }
 
+  playAudio(human: Human, state: PlayState) {
+    let actx = new (window.AudioContext || (window as any).webkitAudioContext)()
+
+    const map = {
+      [PlayState.TalkingWave.valueOf()]: "Hey",
+      [PlayState.TalkingHappy.valueOf()]: "Bye",
+      [PlayState.TalkingMenu.valueOf()]: "Want",
+      [PlayState.TalkingSad.valueOf()]: "DontWant",
+      [PlayState.TalkingForward.valueOf()]: "Thatway",
+      [PlayState.TalkingBackward.valueOf()]: "Thatway"
+    }
+
+    let num = _.random(1, 4) // TODO: Some have 5!
+    const src = `audio/${human.voice}-${map[state.valueOf()]}${num}.wav`
+    let audioData: any, srcNode: AudioBufferSourceNode;  // global so we can access them from handlers
+
+    const decode = (buffer: any) => {
+      console.log("Decoding)")
+      actx.decodeAudioData(buffer, playLoop);
+    }
+
+    console.log("Context?", actx)
+    fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
+
+    // Sets up a new source node as needed as stopping will render current invalid
+    const playLoop = (abuffer: any) => {
+      console.log("Playing")
+      if (!audioData) audioData = abuffer;  // create a reference for control buttons
+      srcNode = actx.createBufferSource();  // create audio source
+      srcNode.buffer = abuffer;             // use decoded buffer
+      srcNode.connect(actx.destination);    // create output
+      srcNode.start();                      // play...
+    }
+  }
+
   render() {
     console.log("Re-rendering")
 
@@ -236,6 +271,7 @@ class App extends Component<{}, State> {
     if (this.state.currentHuman.wants === this.state.item) {
       const result = this.state.currentHuman.trade()
       if (result) {
+        this.playAudio(this.state.currentHuman!, PlayState.TalkingHappy)
         this.setState({ item: result, playState: PlayState.TalkingHappy })
         if (this.playerRef.current) {
           this.playerRef.current.fadeTransition(this.state.currentHuman.happy())
@@ -243,6 +279,7 @@ class App extends Component<{}, State> {
       }
     } else {
       this.setState({ playState: PlayState.TalkingSad })
+      this.playAudio(this.state.currentHuman!, PlayState.TalkingSad)
       if (this.playerRef.current) {
         this.playerRef.current.fadeTransition(this.state.currentHuman.angry())
       }
@@ -318,6 +355,7 @@ class App extends Component<{}, State> {
     }
 
     this.setState({ playState: state })
+    this.playAudio(this.state.currentHuman!, PlayState.TalkingBackward)
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(animation)
     }
@@ -326,6 +364,7 @@ class App extends Component<{}, State> {
   speechBubble = () => {
     const car = this.state.currentCar
     this.setState({ playState: PlayState.TalkingWave, currentHuman: car.human })
+    this.playAudio(car.human, PlayState.TalkingWave)
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(car.human.wave())
     }
@@ -350,6 +389,7 @@ class App extends Component<{}, State> {
 
   toMenu = () => {
     this.setState({ playState: PlayState.TalkingMenu })
+    this.playAudio(this.state.currentHuman!, PlayState.TalkingMenu)
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(this.state.currentHuman!.neutral())
     }
