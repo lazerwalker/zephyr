@@ -5,6 +5,7 @@ import Language from '../language';
 interface Props {
   continue: any;
   language: Language;
+  item: string
 }
 
 export default class AngryView extends React.Component<Props> {
@@ -12,10 +13,10 @@ export default class AngryView extends React.Component<Props> {
     return (
       <div className='angry-view dialog'>
         <div className="text-wrapper">
-          <div className="text">{this.props.language.noThanks()}</div>
+          <div className="text" dangerouslySetInnerHTML={{ __html: this.props.language.npcNoThanks(this.props.item) }} />
         </div>
 
-        <Button onClick={this.continue}>Ok.</Button>
+        <Button onClick={this.continue}>{this.props.language.menuOkay}</Button>
       </div>
     )
   }

@@ -10,7 +10,7 @@ interface Props {
 
 export default class PointView extends React.Component<Props> {
   render() {
-    const text = this.props.isForward ? this.props.language.goForward() : this.props.language.goBackward()
+    const text = this.props.isForward ? this.props.language.npcForward : this.props.language.npcBackward
 
     return (
       <div className='point-view dialog'>
@@ -18,7 +18,7 @@ export default class PointView extends React.Component<Props> {
           <div className="text" dangerouslySetInnerHTML={{ __html: text }} />
         </div>
 
-        <Button onClick={this.continue}>Thank you.</Button>
+        <Button onClick={this.continue}>{this.props.language.menuOkay}</Button>
       </div>
     )
   }

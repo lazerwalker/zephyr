@@ -12,9 +12,9 @@ export default class WaveView extends React.Component<Props> {
     return (
       <div className='wave-view dialog'>
         <div className="text-wrapper">
-          <div className="text">{this.props.language.greetings()}</div>
+          <div className="text">{this.props.language.npcGreeting}</div>
         </div>
-        <Button onClick={this.continue}>Hello!</Button>
+        <Button onClick={this.continue}>{this.props.language.menuGreeting}</Button>
       </div>
     )
   }

@@ -22,10 +22,9 @@ export default class MenuView extends React.Component<Props> {
           <div className="desire-wrapper text-wrapper">
             <div className="desire" dangerouslySetInnerHTML={{ __html: this.props.language.tradeDeclaration(this.props.human.desiredTrade) }} />
           </div>
-          <Button className='trade' onClick={this.trade}>Trade your {this.props.item}.</Button>
-          <Button className='ask' onClick={this.ask}>Who is looking for {this.props.item}?</Button>
-          <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
-        </div>
+          <Button className='trade' onClick={this.trade} html={this.props.language.menuTrade(this.props.item)} />
+          <Button className='ask' onClick={this.ask} html={this.props.language.menuAsk(this.props.item)} />
+          <Button className='goodbye' onClick={this.goodbye} html={this.props.language.menuGoodbye} />        </div>
       )
     } else {
       return (
@@ -33,7 +32,7 @@ export default class MenuView extends React.Component<Props> {
           <div className="text-wrapper">
             <div className="thank-you">Thank you for the {this.props.human.wants}.</div>
           </div>
-          <Button className='goodbye' onClick={this.goodbye}>Goodbye!</Button>
+          <Button className='goodbye' onClick={this.goodbye} html={this.props.language.menuGoodbye} />
         </div>
       )
     }

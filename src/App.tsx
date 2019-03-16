@@ -44,19 +44,22 @@ class App extends Component<{}, State> {
   private playerRef = React.createRef<Cinemagraph>()
   private progressBarRef = React.createRef<HTMLProgressElement>()
 
-  private train = Train.generate()
+  private train: Train
 
   private cache: { [name: string]: CacheEntry } = {}
 
   constructor(props: any) {
     super(props)
+    let language = new Language()
+    this.train = Train.generate(language)
+
     this.state = {
       currentCar: this.train.cars[0],
       playState: PlayState.Car,
       loaded: false,
       loadingProgress: 0,
-      item: "optimism",
-      language: new Language()
+      item: _.sample(language.items)!,
+      language: language
     }
   }
 
@@ -161,7 +164,7 @@ class App extends Component<{}, State> {
             ref={this.playerRef}
             onComplete={this.onComplete}>
           </Cinemagraph >
-          <AngryView continue={this.toMenu} language={this.state.language} />
+          <AngryView continue={this.toMenu} language={this.state.language} item={this.state.item} />
         </div>
       </div >
     } else if (this.state.playState === PlayState.TalkingHappy) {

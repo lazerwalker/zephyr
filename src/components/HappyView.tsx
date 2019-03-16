@@ -15,7 +15,7 @@ export default class HappyView extends React.Component<Props> {
           <div className="text">{this.props.language.thanks()}</div>
         </div>
 
-        <Button onClick={this.continue}>Bye!</Button>
+        <Button onClick={this.continue}>{this.props.language.menuGoodbye}</Button>
       </div>
     )
   }

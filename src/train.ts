@@ -2,6 +2,7 @@ import { CacheEntry } from "./preloadMedia";
 import _ from 'lodash';
 import { UIPosition, people } from "./data";
 import { Human } from "./Human";
+import Language from "./language";
 
 export enum CarType {
   ObservationTable = "observation-table",
@@ -51,7 +52,7 @@ export class TrainCar {
 export class Train {
   cars: TrainCar[] = []
 
-  static generate() {
+  static generate(language: Language) {
     const addCarToFront = (cars: TrainCar[], car: TrainCar) => {
       if (cars.length > 0) {
         cars[cars.length - 1].front = car;
@@ -60,8 +61,8 @@ export class Train {
       cars.push(car)
     }
 
-    const cycle = this.generateTradeCycle()
-    const backupCycle = this.generateTradeCycle()
+    const cycle = this.generateTradeCycle(language)
+    const backupCycle = this.generateTradeCycle(language)
     cycle.concat(backupCycle.slice(0, 2))
 
     var cars: TrainCar[] = []
@@ -88,14 +89,13 @@ export class Train {
     return new Train(cars)
   }
 
-  static generateTradeCycle(): (Trade[]) {
-    const items = [
-      "optimism",
-      "Unity programmer",
-      "USB key",
-      "coffee",
-      "healthy snack"
-    ]
+  static generateTradeCycle(language: Language): (Trade[]) {
+    let rooms = _.random(5, 8)
+
+    let items: string[] = []
+    for (let i = 0; i < rooms; i++) {
+      items.push(language.item())
+    }
 
     let trades: Trade[] = []
 
