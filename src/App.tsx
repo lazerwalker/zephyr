@@ -48,6 +48,9 @@ class App extends Component<{}, State> {
 
   private cache: { [name: string]: CacheEntry } = {}
 
+  private ctx = new (window.AudioContext || (window as any).webkitAudioContext)()
+  private currentBuffer: AudioBufferSourceNode | undefined
+
   constructor(props: any) {
     super(props)
     let language = new Language()
@@ -86,7 +89,9 @@ class App extends Component<{}, State> {
   }
 
   playAudio(human: Human, state: PlayState) {
-    let actx = new (window.AudioContext || (window as any).webkitAudioContext)()
+    if (this.currentBuffer) {
+      this.currentBuffer.stop()
+    }
 
     const map = {
       [PlayState.TalkingWave.valueOf()]: "Hey",
@@ -101,22 +106,24 @@ class App extends Component<{}, State> {
     const src = `audio/${human.voice}-${map[state.valueOf()]}${num}.wav`
     let audioData: any, srcNode: AudioBufferSourceNode;  // global so we can access them from handlers
 
+    console.log("Audio src = ", src)
     const decode = (buffer: any) => {
-      console.log("Decoding)")
-      actx.decodeAudioData(buffer, playLoop);
+      console.log("Decoding")
+      this.ctx.decodeAudioData(buffer, playLoop);
     }
 
-    console.log("Context?", actx)
+    console.log("Context?", this.ctx)
     fetch(src, { mode: "cors" }).then(function (resp) { return resp.arrayBuffer() }).then(decode);
 
     // Sets up a new source node as needed as stopping will render current invalid
     const playLoop = (abuffer: any) => {
       console.log("Playing")
       if (!audioData) audioData = abuffer;  // create a reference for control buttons
-      srcNode = actx.createBufferSource();  // create audio source
+      srcNode = this.ctx.createBufferSource();  // create audio source
       srcNode.buffer = abuffer;             // use decoded buffer
-      srcNode.connect(actx.destination);    // create output
-      srcNode.start();                      // play...
+      srcNode.connect(this.ctx.destination);    // create output
+      srcNode.start();
+      this.currentBuffer = srcNode                    // play...
     }
   }
 
@@ -382,6 +389,9 @@ class App extends Component<{}, State> {
   exitConversation = () => {
     // TODO: This will change!
     this.setState({ playState: PlayState.Car })
+    if (this.currentBuffer) {
+      this.currentBuffer.stop()
+    }
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(this.state.currentCar.media())
     }
