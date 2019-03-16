@@ -5,7 +5,7 @@ import preloadMedia, { CacheEntry } from './preloadMedia';
 
 import Levels from './data'
 import TrainCarView from './components/TrainCarView';
-import { Train, TrainCar } from './train';
+import { Item, Train, TrainCar } from './train';
 import { Human } from './Human';
 import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
@@ -33,7 +33,7 @@ interface State {
 
   currentCar: TrainCar
   currentHuman?: Human
-  item: string
+  item: Item
 
   language: Language
 }
@@ -275,7 +275,7 @@ class App extends Component<{}, State> {
 
   trade = () => {
     if (!this.state.currentHuman) return
-    if (this.state.currentHuman.wants === this.state.item) {
+    if (this.state.currentHuman.desiredTrade.wants === this.state.item) {
       const result = this.state.currentHuman.trade()
       if (result) {
         this.playAudio(this.state.currentHuman!, PlayState.TalkingHappy)
@@ -300,7 +300,6 @@ class App extends Component<{}, State> {
     let animation: CacheEntry
 
     if (this.state.currentCar.hasTrade(this.state.item)) {
-      console.log("It's here!")
       state = PlayState.TalkingWave
       animation = this.state.currentHuman.wave()
     } else {

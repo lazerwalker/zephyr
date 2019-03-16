@@ -1,11 +1,12 @@
 import * as React from 'react'
 import Button from './Button';
 import Language from '../language';
+import { Item } from '../train'
 
 interface Props {
   continue: any;
   language: Language;
-  item: string
+  item: Item
 }
 
 export default class AngryView extends React.Component<Props> {

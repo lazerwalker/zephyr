@@ -1,4 +1,4 @@
-import { Trade } from './train'
+import { Item, Trade } from './train'
 import _ from 'lodash';
 
 export default class Language {
@@ -20,12 +20,25 @@ export default class Language {
   menuGoodbye: string
   menuOkay: string
 
-  items: string[] = []
+  items: Item[] = []
 
-  item(): string {
-    let word = this.itemWord()
-    this.items.push(word)
-    return word
+  palette = [
+    "#ff0000",
+    "#00ff00",
+    "#0000ff",
+    "#ff00ff",
+    "#ffff00",
+    "#00ffff"
+  ]
+
+  item(): Item {
+    const word = this.itemWord();
+    const color = this.palette.shift()!
+
+    const item = {name: word, color}
+
+    this.items.push(item)
+    return item
   }
 
   itemWord(): string {
@@ -42,10 +55,10 @@ export default class Language {
     this.menuOkay = this.sentence(_.sample([1, 1, 2])!).join("") + "!"
 
     const tradeWords = _.sample([2, 2, 3, 3, 3, 3, 4])!
-    this.menuTradeBase = _.shuffle(this.sentence(tradeWords).concat(["<strong>#item#</strong>"])).join(" ") + "."
+    this.menuTradeBase = _.shuffle(this.sentence(tradeWords).concat(["<strong style='color: #color#;'>#item#</strong>"])).join(" ") + "."
 
     const noThanksWords = _.sample([2, 3, 3, 3, 3, 4, 5])!
-    this.npcNoThanksBase = _.shuffle(this.sentence(noThanksWords).concat(["<strong>#item#</strong>"])).join(" ") + "."
+    this.npcNoThanksBase = _.shuffle(this.sentence(noThanksWords).concat(["<strong style='color: #color#;'>#item#</strong>"])).join(" ") + "."
 
     let directionWords = _.sample([2, 2, 3, 3, 3, 3, 4])!
     let direction = _.shuffle(this.sentence(directionWords).concat(["<strong>#dir#</strong>"])).join(" ") + "."
@@ -56,15 +69,21 @@ export default class Language {
     this.npcBackward = direction.replace("#dir#", backward)
 
     const askWords = _.sample([2, 2, 3, 3, 3, 3, 4, 4])!
-    this.menuAskBase = _.shuffle(this.sentence(askWords).concat(["<strong>#item#</strong>"])).join(" ") + "."
+    this.menuAskBase = _.shuffle(this.sentence(askWords).concat(["<strong style='color: #color#;'>#item#</strong>"])).join(" ") + "."
+
+    this.palette = _.shuffle(this.palette)
   }
 
-  menuTrade(item: string) {
-    return this.menuTradeBase.replace("#item#", item);
+  menuTrade(item: Item) {
+    return this.menuTradeBase
+      .replace("#item#", item.name)
+      .replace("#color#", item.color)
   }
 
-  menuAsk(item: string) {
-    return this.menuAskBase.replace("#item#", item);
+  menuAsk(item: Item) {
+    return this.menuAskBase
+      .replace("#item#", item.name)
+      .replace("#color#", item.color)
   }
 
   greetings(): string {
@@ -79,8 +98,8 @@ export default class Language {
     let wantIndex = _.random(0, 2)
     let hasIndex = _.random(numberOfWords - 1, numberOfWords - 2)
 
-    sentence[wantIndex] = `<strong>${trade.wants}</strong>`
-    sentence[hasIndex] = `<strong>${trade.has}</strong>`
+    sentence[wantIndex] = `<strong style="color: ${trade.wants.color};">${trade.wants.name}</strong>`
+    sentence[hasIndex] = `<strong style="color: ${trade.has.color};">${trade.has.name}</strong>`
 
     return sentence.join(" ") + "."
   }
@@ -91,16 +110,10 @@ export default class Language {
     return this.sentence(numberOfWords).join(" ") + "."
   }
 
-  npcNoThanks(item: string): string {
-    return this.npcNoThanksBase.replace("#item#", item);
-  }
-
-  goForward(): string {
-    return "I think someone is <strong>that way</strong>."
-  }
-
-  backward(): string {
-    return "I think someone is <strong>this-a-way</strong>."
+  npcNoThanks(item: Item): string {
+    return this.npcNoThanksBase
+      .replace("#item#", item.name)
+      .replace("#color#", item.color)
   }
 
   //

@@ -13,9 +13,14 @@ export enum CarType {
   Sleeper = "sleeper"
 }
 
+export interface Item {
+  name: string
+  color: string
+}
+
 export interface Trade {
-  has: string
-  wants: string
+  has: Item
+  wants: Item
 }
 
 export class TrainCar {
@@ -35,7 +40,7 @@ export class TrainCar {
     this.human = new Human(name, trades[0])
   }
 
-  hasTrade(item: String): boolean {
+  hasTrade(item: Item): boolean {
     return !!this.trades.find(t => t.wants === item)
   }
 
@@ -92,7 +97,7 @@ export class Train {
   static generateTradeCycle(language: Language): (Trade[]) {
     let rooms = _.random(5, 8)
 
-    let items: string[] = []
+    let items: Item[] = []
     for (let i = 0; i < rooms; i++) {
       items.push(language.item())
     }
