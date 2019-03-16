@@ -32,7 +32,11 @@ export default class Language {
     "#aa00aa",
     "#c046a3",
     "#99ab2f",
-    "#00fa11"
+    "#00fa11",
+    "#afafaf",
+    "#12ff87",
+    "#182598",
+    "#19aaff"
   ]
 
   item(): Item {
@@ -42,6 +46,7 @@ export default class Language {
     const item = {name: word, color}
 
     this.items.push(item)
+    console.log(item)
     return item
   }
 

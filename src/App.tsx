@@ -39,6 +39,8 @@ interface State {
   currentHuman?: Human
   item: Item
 
+  score: number
+
   language: Language
 }
 
@@ -59,6 +61,7 @@ class App extends Component<{}, State> {
     super(props)
     let language = new Language()
     this.train = Train.generate(language)
+    console.log(language.items)
 
     this.state = {
       currentCar: this.train.cars[0],
@@ -66,7 +69,8 @@ class App extends Component<{}, State> {
       loaded: false,
       loadingProgress: 0,
       item: _.sample(language.items)!,
-      language: language
+      language: language,
+      score: 0
     }
   }
 
@@ -190,7 +194,7 @@ class App extends Component<{}, State> {
       <div className="App">
         <div className="video-wrapper">
           <InventoryView item={this.state.item} />
-          <ScoreView score={0} total={this.train.cars.length} />
+          <ScoreView score={this.state.score} total={this.train.cars.length} />
           <Cinemagraph
             media={this.cache[media.name]}
             ref={this.playerRef}
@@ -230,7 +234,7 @@ class App extends Component<{}, State> {
       const result = this.state.currentHuman.trade()
       if (result) {
         this.playAudio(this.state.currentHuman!, PlayState.TalkingHappy)
-        this.setState({ item: result, playState: PlayState.TalkingHappy })
+        this.setState({ item: result, playState: PlayState.TalkingHappy, score: this.state.score + 1 })
         if (this.playerRef.current) {
           this.playerRef.current.fadeTransition(this.state.currentHuman.happy())
         }
