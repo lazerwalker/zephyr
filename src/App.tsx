@@ -11,9 +11,13 @@ import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
 import AngryView from './components/AngryView';
 import PointView from './components/PointView';
-import _ from 'lodash';
+import InventoryView from './components/InventoryView'
+import ScoreView from './components/ScoreView'
+
 import HappyView from './components/HappyView';
 import Language from './language';
+
+import _ from 'lodash';
 
 enum PlayState {
   NotStarted = 0,
@@ -185,6 +189,8 @@ class App extends Component<{}, State> {
     return (
       <div className="App">
         <div className="video-wrapper">
+          <InventoryView item={this.state.item} />
+          <ScoreView score={0} total={this.train.cars.length} />
           <Cinemagraph
             media={this.cache[media.name]}
             ref={this.playerRef}

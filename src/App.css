@@ -65,7 +65,7 @@ a {
 }
 
 .next-wrapper.up {
-  top: 0px;
+  top: 30px;
 }
 
 .next-wrapper.visible {
@@ -193,4 +193,47 @@ button.ask {
 
 .desire-wrapper {
   bottom: 230px !important;
+}
+
+
+.inventory, .score {
+  width: 140px;
+  margin-left: 10px;
+  /* margin-top: 20px; */
+  position: absolute;
+
+  float: right;
+
+}
+
+.inventory .header, {
+  background-color: #E9E5DF;
+  font-size: 12px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+.inventory .item-box {
+  width: 100px;
+  margin: auto;
+}
+
+.item-box, .score-box {
+  background-color: #E4D8D2;
+
+  border: 1px solid #4B3F39;
+  font-size: 24px;
+  margin-top: 0;
+  padding: 8px;
+
+}
+
+.score {
+  margin-left: 65vw;
+  width: 130px;
+}
+
+.score-box {
+  width: 70px;
+  margin: auto;
 }

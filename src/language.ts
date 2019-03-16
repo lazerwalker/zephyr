@@ -28,7 +28,11 @@ export default class Language {
     "#0000ff",
     "#ff00ff",
     "#ffff00",
-    "#00ffff"
+    "#00ffff",
+    "#aa00aa",
+    "#c046a3",
+    "#99ab2f",
+    "#00fa11"
   ]
 
   item(): Item {
