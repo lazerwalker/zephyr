@@ -26,11 +26,11 @@ export class TrainCar {
 
   human: Human
 
-  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[]) {
+  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[], name: string) {
     this.type = type
     this.trades = trades
 
-    this.human = new Human(_.sample(names)!, trades[0])
+    this.human = new Human(name, trades[0])
   }
 
   hasTrade(item: String): boolean {
@@ -64,11 +64,13 @@ export class Train {
     cycle.concat(backupCycle.slice(0, 2))
 
     var cars: TrainCar[] = []
-    console.log("CYCLE", cycle)
+
+    const humans = _.shuffle(names);
 
     while (cycle.length > 0) {
       let type = (cars.length % 2 === 0 ? CarType.ObservationLookout : CarType.ObservationTable)
-      addCarToFront(cars, new TrainCar(type, [cycle.shift()!]))
+      const car = new TrainCar(type, [cycle.shift()!], humans.shift()!)
+      addCarToFront(cars, car)
     }
     console.log(cars)
 
