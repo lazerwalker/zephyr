@@ -188,10 +188,10 @@ class App extends Component<{}, State> {
       customView = <HappyView continue={this.exitConversation} language={this.state.language} />
     } else if (this.state.playState === PlayState.TalkingForward) {
       media = this.state.currentHuman!.towards()
-      customView = <PointView continue={this.toMenu} isForward={true} language={this.state.language} />
+      customView = <PointView continue={this.exitConversation} isForward={true} language={this.state.language} />
     } else if (this.state.playState === PlayState.TalkingBackward) {
       media = this.state.currentHuman!.behind()
-      customView = <PointView continue={this.toMenu} isForward={false} language={this.state.language} />
+      customView = <PointView continue={this.exitConversation} isForward={false} language={this.state.language} />
     }
 
     if (!media) { return <div /> }
@@ -260,65 +260,60 @@ class App extends Component<{}, State> {
     let state: PlayState
     let animation: CacheEntry
 
-    if (this.state.currentCar.hasTrade(this.state.item)) {
+    // Seek forward to find the nearest located car
+    let forwardSeeker: TrainCar | undefined = this.state.currentCar
+    let existsForward = false
+    let forwardCount = 0
+    while (!existsForward && !_.isUndefined(forwardSeeker)) {
+      forwardSeeker = forwardSeeker.front
+      if (!forwardSeeker) {
+        forwardCount = -1;
+        continue;
+      };
+
+      forwardCount++
+      if (forwardSeeker.hasTrade(this.state.item)) {
+        existsForward = true
+        break;
+      }
+    }
+
+    // Seek backwards
+    let backwardsSeeker: TrainCar | undefined = this.state.currentCar
+    let existsBackwards = false
+    let backwardsCount = 0
+    while (!existsBackwards && !_.isUndefined(backwardsSeeker)) {
+      backwardsSeeker = backwardsSeeker.rear
+      if (!backwardsSeeker) {
+        backwardsCount = -1;
+        continue;
+      };
+
+      backwardsCount++
+      if (backwardsSeeker.hasTrade(this.state.item)) {
+        existsBackwards = true
+        break;
+      }
+    }
+
+    if (existsForward && existsBackwards) {
+      if (backwardsCount > forwardCount) {
+        existsBackwards = false
+      } else if (backwardsCount < forwardCount) {
+        existsForward = false
+      }
+    }
+
+    if (existsForward) {
+      state = PlayState.TalkingForward
+      animation = this.state.currentHuman.towards()
+    } else if (existsBackwards) {
+      state = PlayState.TalkingBackward
+      animation = this.state.currentHuman.behind()
+    } else {
+      // TODO: This should be a 'it's in here' state
       state = PlayState.TalkingWave
       animation = this.state.currentHuman.wave()
-    } else {
-      // Seek forward to find the nearest located car
-      let forwardSeeker: TrainCar | undefined = this.state.currentCar
-      let existsForward = false
-      let forwardCount = 0
-      while (!existsForward && !_.isUndefined(forwardSeeker)) {
-        forwardSeeker = forwardSeeker.front
-        if (!forwardSeeker) {
-          forwardCount = -1;
-          continue;
-        };
-
-        forwardCount++
-        if (forwardSeeker.hasTrade(this.state.item)) {
-          existsForward = true
-          break;
-        }
-      }
-
-      // Seek backwards
-      let backwardsSeeker: TrainCar | undefined = this.state.currentCar
-      let existsBackwards = false
-      let backwardsCount = 0
-      while (!existsBackwards && !_.isUndefined(backwardsSeeker)) {
-        backwardsSeeker = backwardsSeeker.rear
-        if (!backwardsSeeker) {
-          backwardsCount = -1;
-          continue;
-        };
-
-        backwardsCount++
-        if (backwardsSeeker.hasTrade(this.state.item)) {
-          existsBackwards = true
-          break;
-        }
-      }
-
-      if (existsForward && existsBackwards) {
-        if (backwardsCount > forwardCount) {
-          existsBackwards = false
-        } else if (backwardsCount < forwardCount) {
-          existsForward = false
-        }
-      }
-
-      if (existsForward) {
-        state = PlayState.TalkingForward
-        animation = this.state.currentHuman.towards()
-      } else if (existsBackwards) {
-        state = PlayState.TalkingBackward
-        animation = this.state.currentHuman.behind()
-      } else {
-        // TODO: This should be a 'it's in here' state
-        state = PlayState.TalkingWave
-        animation = this.state.currentHuman.wave()
-      }
     }
 
     this.setState({ playState: state })
@@ -330,10 +325,20 @@ class App extends Component<{}, State> {
 
   speechBubble = () => {
     const car = this.state.currentCar
-    this.setState({ playState: PlayState.TalkingWave, currentHuman: car.human })
-    this.playAudio(car.human, PlayState.TalkingWave)
-    if (this.playerRef.current) {
-      this.playerRef.current.fadeTransition(car.human.wave())
+
+    if (!car.human.canTrade) {
+      this.setState({ playState: PlayState.TalkingHappy, currentHuman: car.human })
+      this.playAudio(car.human, PlayState.TalkingHappy)
+      if (this.playerRef.current) {
+        this.playerRef.current.fadeTransition(car.human.happy())
+      }
+
+    } else {
+      this.setState({ playState: PlayState.TalkingWave, currentHuman: car.human })
+      this.playAudio(car.human, PlayState.TalkingWave)
+      if (this.playerRef.current) {
+        this.playerRef.current.fadeTransition(car.human.wave())
+      }
     }
   }
 

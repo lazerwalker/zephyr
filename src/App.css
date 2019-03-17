@@ -172,7 +172,7 @@ button.trade {
   bottom: 170px;
 }
 
-button.ask {
+button.ask, button.trade.no-ask {
   bottom: 115px;
 }
 
@@ -193,6 +193,10 @@ button.ask {
 
 .desire-wrapper {
   bottom: 230px !important;
+}
+
+.desire-wrapper.no-ask {
+  bottom: 180px !important;
 }
 
 

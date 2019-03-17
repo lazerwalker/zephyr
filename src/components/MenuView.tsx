@@ -18,15 +18,27 @@ interface Props {
 export default class MenuView extends React.Component<Props> {
   render() {
     if (this.props.human.canTrade) {
-      return (
-        <div className='menu-view'>
-          <div className="desire-wrapper text-wrapper">
-            <div className="desire" dangerouslySetInnerHTML={{ __html: this.props.language.tradeDeclaration(this.props.human.desiredTrade) }} />
-          </div>
-          <Button className='trade' onClick={this.trade} html={this.props.language.menuTrade(this.props.item)} />
-          <Button className='ask' onClick={this.ask} html={this.props.language.menuAsk(this.props.item)} />
-          <Button className='goodbye' onClick={this.goodbye} html={this.props.language.menuGoodbye} />        </div>
-      )
+      if (this.props.human.desiredTrade.wants === this.props.item) {
+        return (
+          <div className='menu-view'>
+            <div className="desire-wrapper no-ask text-wrapper">
+              <div className="desire" dangerouslySetInnerHTML={{ __html: this.props.language.tradeDeclaration(this.props.human.desiredTrade) }} />
+            </div>
+            <Button className='trade no-ask' onClick={this.trade} html={this.props.language.menuTrade(this.props.item)} />
+            <Button className='goodbye' onClick={this.goodbye} html={this.props.language.menuGoodbye} />        </div>
+        )
+
+      } else {
+        return (
+          <div className='menu-view'>
+            <div className="desire-wrapper text-wrapper">
+              <div className="desire" dangerouslySetInnerHTML={{ __html: this.props.language.tradeDeclaration(this.props.human.desiredTrade) }} />
+            </div>
+            <Button className='trade' onClick={this.trade} html={this.props.language.menuTrade(this.props.item)} />
+            <Button className='ask' onClick={this.ask} html={this.props.language.menuAsk(this.props.item)} />
+            <Button className='goodbye' onClick={this.goodbye} html={this.props.language.menuGoodbye} />        </div>
+        )
+      }
     } else {
       // TODO: This shouldn't exist here! Its own view, with gibberish
       return (
