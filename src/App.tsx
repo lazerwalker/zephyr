@@ -13,6 +13,7 @@ import AngryView from './components/AngryView';
 import PointView from './components/PointView';
 import InventoryView from './components/InventoryView'
 import ScoreView from './components/ScoreView'
+import BackgroundMusic from './components/BackgroundMusic'
 
 import HappyView from './components/HappyView';
 import Language from './language';
@@ -137,7 +138,6 @@ class App extends Component<{}, State> {
       this.currentBuffer.onended = () => {
         delete this.currentBuffer
       }
-
     }
   }
 
@@ -199,6 +199,7 @@ class App extends Component<{}, State> {
     return (
       <div className="App">
         <div className="video-wrapper">
+          <BackgroundMusic />
           <InventoryView item={this.state.item} />
           <ScoreView score={this.state.score} total={this.train.cars.length} constant={this.state.constant} />
           <Cinemagraph
