@@ -16,7 +16,7 @@ export interface UIPosition {
 
 let data: Media[] = [
   {
-    name: "observation-table",
+    name: "observation-table1",
     bubbles: [
       { x: "65%", y: "21%" },
     ],
@@ -25,7 +25,25 @@ let data: Media[] = [
     }
   },
   {
-    name: "observation-lookout",
+    name: "observation-table2",
+    bubbles: [
+      { x: "65%", y: "21%" },
+    ],
+    eye: {
+      x: "8%", y: "23%"
+    }
+  },
+  {
+    name: "observation-table3",
+    bubbles: [
+      { x: "68%", y: "26%" },
+    ],
+    eye: {
+      x: "8%", y: "23%"
+    }
+  },
+  {
+    name: "observation-lookout1",
     bubbles: [
       { x: "27%", y: "27%" },
     ],
@@ -34,7 +52,79 @@ let data: Media[] = [
     }
   },
   {
-    name: "sleeper",
+    name: "observation-lookout2",
+    bubbles: [
+      { x: "20%", y: "24%" },
+    ],
+    eye: {
+      x: "80%", y: "30%"
+    }
+  },
+  {
+    name: "observation-lookout3",
+    bubbles: [
+      { x: "27%", y: "27%" },
+    ],
+    eye: {
+      x: "80%", y: "30%"
+    }
+  },
+  {
+    name: "observation-lookout4",
+    bubbles: [
+      { x: "60%", y: "22%" },
+    ],
+    eye: {
+      x: "10%", y: "28%"
+    }
+  },
+  {
+    name: "observation-lookout5",
+    bubbles: [
+      { x: "27%", y: "27%" },
+    ],
+    eye: {
+      x: "80%", y: "30%"
+    }
+  },
+  {
+    name: "sleeper1",
+    bubbles: [
+      { x: "75%", y: "27%" },
+    ],
+    eye: {
+      x: "5%", y: "45%"
+    }
+  },
+  {
+    name: "sleeper2",
+    bubbles: [
+      { x: "75%", y: "27%" },
+    ],
+    eye: {
+      x: "7%", y: "40%"
+    }
+  },
+  {
+    name: "sleeper3",
+    bubbles: [
+      { x: "32%", y: "40%" },
+    ],
+    eye: {
+      x: "48%", y: "27%"
+    }
+  },
+  {
+    name: "sleeper4",
+    bubbles: [
+      { x: "75%", y: "27%" },
+    ],
+    eye: {
+      x: "5%", y: "45%"
+    }
+  },
+  {
+    name: "sleeper5",
     bubbles: [
       { x: "75%", y: "27%" },
     ],

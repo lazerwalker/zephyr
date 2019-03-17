@@ -25,6 +25,7 @@ export interface Trade {
 
 export class TrainCar {
   type: CarType
+  mediaName: string
 
   front?: TrainCar
   rear?: TrainCar
@@ -34,13 +35,14 @@ export class TrainCar {
   human: Human
   landscapeName: string
 
-  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[], name: string, landscape: string) {
+  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[], name: string, landscape: string, mediaName: string) {
     this.type = type
     this.trades = trades
 
     this.human = new Human(name, trades[0])
 
     this.landscapeName = landscape
+    this.mediaName = mediaName
   }
 
   hasTrade(item: Item): boolean {
@@ -58,7 +60,7 @@ export class TrainCar {
   }
 
   media(): CacheEntry {
-    return (window as any).cache[this.type.valueOf()]
+    return (window as any).cache[this.mediaName]
   }
 
   landscape(): CacheEntry {
@@ -93,16 +95,62 @@ export class Train {
     let usedSoundRoom = false
 
     while (cycle.length > 0) {
-      let type: CarType = (lastType == CarType.ObservationTable ? CarType.ObservationLookout : CarType.ObservationTable)
-
-      if (cars.length > 0 && !usedSoundRoom && _.random(0, cycle.length) === 0) {
-        usedSoundRoom = true
-        type = CarType.Sleeper
-      }
+      let type: CarType
+      do {
+        type = _.sample([CarType.ObservationLookout, CarType.ObservationTable, CarType.Sleeper])!
+      } while (type === lastType)
 
       lastType = type
 
-      const car = new TrainCar(type, [cycle.shift()!], humans[type].shift()!.name, landscapes.shift()!)
+      let lookoutKey = CarType.ObservationLookout.valueOf()
+      let tableKey = CarType.ObservationTable.valueOf()
+      let sleeperKey = CarType.Sleeper.valueOf()
+
+      const carCounts = {
+        [lookoutKey]: 5,
+        [tableKey]: 3,
+        [sleeperKey]: 5
+      }
+
+      const carMediaBuckets: { [name: string]: string[] } = {}
+      carMediaBuckets[lookoutKey] = []
+      carMediaBuckets[tableKey] = []
+      carMediaBuckets[sleeperKey] = []
+
+      for (let i = 1; i < 6; i++) {
+        if (i < carCounts[lookoutKey]) {
+          carMediaBuckets[lookoutKey].push("observation-lookout" + i)
+        }
+
+        if (i < carCounts[tableKey]) {
+          carMediaBuckets[tableKey].push("observation-table" + i)
+        }
+
+        if (i < carCounts[sleeperKey]) {
+          carMediaBuckets[sleeperKey].push("sleeper" + i)
+        }
+      }
+
+      const bucketCopies = {
+        [lookoutKey]: _.shuffle(carMediaBuckets[lookoutKey]),
+        [tableKey]: _.shuffle(carMediaBuckets[tableKey]),
+        [sleeperKey]: _.shuffle(carMediaBuckets[sleeperKey])
+      }
+
+      let mediaName = bucketCopies[type.valueOf()].shift()
+      if (!mediaName) {
+        bucketCopies[type.valueOf()] = _.shuffle(carMediaBuckets[type.valueOf()])
+        mediaName = bucketCopies[type.valueOf()].shift()
+      }
+
+      const car = new TrainCar(
+        type,
+        [cycle.shift()!],
+        humans[type].shift()!.name,
+        landscapes.shift()!,
+        mediaName!
+      )
+
       addCarToFront(cars, car)
     }
 
