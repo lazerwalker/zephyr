@@ -40,6 +40,7 @@ interface State {
   item: Item
 
   score: number
+  constant: number
 
   language: Language
 }
@@ -70,7 +71,8 @@ class App extends Component<{}, State> {
       loadingProgress: 0,
       item: _.sample(language.items)!,
       language: language,
-      score: 0
+      score: 0,
+      constant: _.random(2, 7)
     }
   }
 
