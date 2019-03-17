@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C653148D21EE7BB80068609E /* Gorli.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gorli.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C653148D21EE7BB80068609E /* TrainJam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainJam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C653149021EE7BB80068609E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C653149221EE7BB80068609E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C653149521EE7BB80068609E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -48,7 +48,7 @@
 		C653148E21EE7BB80068609E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C653148D21EE7BB80068609E /* Gorli.app */,
+				C653148D21EE7BB80068609E /* TrainJam.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,9 +70,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C653148C21EE7BB80068609E /* Gorli */ = {
+		C653148C21EE7BB80068609E /* TrainJam */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C653149F21EE7BBA0068609E /* Build configuration list for PBXNativeTarget "Gorli" */;
+			buildConfigurationList = C653149F21EE7BBA0068609E /* Build configuration list for PBXNativeTarget "TrainJam" */;
 			buildPhases = (
 				C653148921EE7BB80068609E /* Sources */,
 				C653148A21EE7BB80068609E /* Frameworks */,
@@ -82,9 +82,9 @@
 			);
 			dependencies = (
 			);
-			name = Gorli;
+			name = TrainJam;
 			productName = Gorli;
-			productReference = C653148D21EE7BB80068609E /* Gorli.app */;
+			productReference = C653148D21EE7BB80068609E /* TrainJam.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -102,7 +102,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C653148821EE7BB80068609E /* Build configuration list for PBXProject "Gorli" */;
+			buildConfigurationList = C653148821EE7BB80068609E /* Build configuration list for PBXProject "TrainJam" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -115,7 +115,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C653148C21EE7BB80068609E /* Gorli */,
+				C653148C21EE7BB80068609E /* TrainJam */,
 			);
 		};
 /* End PBXProject section */
@@ -321,7 +321,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C653148821EE7BB80068609E /* Build configuration list for PBXProject "Gorli" */ = {
+		C653148821EE7BB80068609E /* Build configuration list for PBXProject "TrainJam" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C653149D21EE7BBA0068609E /* Debug */,
@@ -330,7 +330,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C653149F21EE7BBA0068609E /* Build configuration list for PBXNativeTarget "Gorli" */ = {
+		C653149F21EE7BBA0068609E /* Build configuration list for PBXNativeTarget "TrainJam" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C65314A021EE7BBA0068609E /* Debug */,
