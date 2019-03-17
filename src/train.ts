@@ -97,7 +97,7 @@ export class Train {
 
       if (cars.length > 0 && !usedSoundRoom && _.random(0, cycle.length) === 0) {
         usedSoundRoom = true
-        type = CarType.Sound
+        type = CarType.Sleeper
       }
 
       lastType = type

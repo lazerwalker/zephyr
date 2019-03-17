@@ -18,32 +18,29 @@ let data: Media[] = [
   {
     name: "observation-table",
     bubbles: [
-      { x: "28%", y: "27%" },
-      { x: "60%", y: "21%" },
-      { x: "44%", y: "15%" }
+      { x: "65%", y: "21%" },
     ],
     eye: {
-      x: "8%", y: "25%"
+      x: "8%", y: "23%"
     }
   },
   {
     name: "observation-lookout",
     bubbles: [
-      { x: "25%", y: "25%" },
-      { x: "80%", y: "25%" },
-      { x: "40%", y: "20%" }
+      { x: "27%", y: "27%" },
     ],
     eye: {
-      x: "80%", y: "40%"
+      x: "80%", y: "30%"
     }
   },
   {
-    name: "sound-room",
+    name: "sleeper",
     bubbles: [
-      { x: "30%", y: "24%" },
-      { x: "56%", y: "24%" },
-      { x: "13%", y: "20%" }
-    ]
+      { x: "75%", y: "27%" },
+    ],
+    eye: {
+      x: "5%", y: "45%"
+    }
   }
 ]
 
@@ -63,7 +60,7 @@ export const people: PersonRoom[] = [
   },
   {
     name: "Ali",
-    room: CarType.Sound
+    room: CarType.Sleeper
   },
   {
     name: "Ben",
@@ -99,7 +96,7 @@ export const people: PersonRoom[] = [
   },
   {
     name: "Maize",
-    room: CarType.Sound
+    room: CarType.Sleeper
   },
   {
     name: "Miguel",
@@ -107,7 +104,7 @@ export const people: PersonRoom[] = [
   },
   {
     name: "Plum",
-    room: CarType.Sound
+    room: CarType.Sleeper
   },
   {
     name: "Robin",
