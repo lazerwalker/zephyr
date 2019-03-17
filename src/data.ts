@@ -3,6 +3,7 @@ import { CarType } from "./train";
 export interface Media {
   name: string
   bubbles?: UIPosition[]
+  eye?: UIPosition
   noAudio?: boolean
   hasBg?: boolean
   ignore?: boolean
@@ -20,15 +21,21 @@ let data: Media[] = [
       { x: "28%", y: "27%" },
       { x: "60%", y: "21%" },
       { x: "44%", y: "15%" }
-    ]
+    ],
+    eye: {
+      x: "8%", y: "25%"
+    }
   },
   {
     name: "observation-lookout",
     bubbles: [
-      { x: "25%", y: "32%" },
-      { x: "60%", y: "25%" },
-      { x: "40%", y: "23%" }
-    ]
+      { x: "25%", y: "25%" },
+      { x: "80%", y: "25%" },
+      { x: "40%", y: "20%" }
+    ],
+    eye: {
+      x: "80%", y: "40%"
+    }
   },
   {
     name: "sound-room",
@@ -128,5 +135,11 @@ people.forEach(p => {
     })
   })
 })
+
+for (let i = 1; i <= 16; i++) {
+  data.push({
+    name: `landscape${i}`
+  })
+}
 
 export default data

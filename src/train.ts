@@ -32,12 +32,15 @@ export class TrainCar {
   trades: Trade[]
 
   human: Human
+  landscapeName: string
 
-  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[], name: string) {
+  constructor(type: CarType = CarType.ObservationLookout, trades: Trade[], name: string, landscape: string) {
     this.type = type
     this.trades = trades
 
     this.human = new Human(name, trades[0])
+
+    this.landscapeName = landscape
   }
 
   hasTrade(item: Item): boolean {
@@ -49,8 +52,17 @@ export class TrainCar {
     return data.bubbles || []
   }
 
+  eye(): UIPosition | undefined {
+    const data = this.media()
+    return data.eye || undefined
+  }
+
   media(): CacheEntry {
     return (window as any).cache[this.type.valueOf()]
+  }
+
+  landscape(): CacheEntry {
+    return (window as any).cache[this.landscapeName]
   }
 }
 
@@ -69,6 +81,12 @@ export class Train {
     const cycle = this.generateTradeCycle(language)
     var cars: TrainCar[] = []
 
+    let landscapes: string[] = []
+    for (let i = 1; i <= 16; i++) {
+      landscapes.push("landscape" + i)
+    }
+    landscapes = _.shuffle(landscapes)
+
     const humans = _.groupBy(_.shuffle(people), _.property("room"))
 
     let lastType: CarType | undefined
@@ -84,7 +102,7 @@ export class Train {
 
       lastType = type
 
-      const car = new TrainCar(type, [cycle.shift()!], humans[type].shift()!.name)
+      const car = new TrainCar(type, [cycle.shift()!], humans[type].shift()!.name, landscapes.shift()!)
       addCarToFront(cars, car)
     }
 

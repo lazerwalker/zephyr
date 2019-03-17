@@ -14,6 +14,7 @@ import PointView from './components/PointView';
 import InventoryView from './components/InventoryView'
 import ScoreView from './components/ScoreView'
 import BackgroundMusic from './components/BackgroundMusic'
+import LandscapeView from './components/LandscapeView'
 
 import HappyView from './components/HappyView';
 import Language from './language';
@@ -23,6 +24,7 @@ import _ from 'lodash';
 enum PlayState {
   NotStarted = 0,
   Car,
+  Landscape,
   TalkingWave,
   TalkingMenu,
   TalkingHappy,
@@ -166,6 +168,7 @@ class App extends Component<{}, State> {
         moveForward={this.moveForward}
         moveBackward={this.moveBackward}
         speechBubble={this.speechBubble}
+        viewWindow={this.viewWindow}
       />
     } else if (this.state.playState === PlayState.TalkingWave) {
       media = this.state.currentHuman!.wave()
@@ -192,6 +195,9 @@ class App extends Component<{}, State> {
     } else if (this.state.playState === PlayState.TalkingBackward) {
       media = this.state.currentHuman!.behind()
       customView = <PointView continue={this.exitConversation} isForward={false} language={this.state.language} />
+    } else if (this.state.playState === PlayState.Landscape) {
+      media = this.state.currentCar.landscape()
+      customView = <LandscapeView continue={this.exitConversation} />
     }
 
     if (!media) { return <div /> }
@@ -340,6 +346,13 @@ class App extends Component<{}, State> {
       if (this.playerRef.current) {
         this.playerRef.current.fadeTransition(car.human.wave())
       }
+    }
+  }
+
+  viewWindow = () => {
+    this.setState({ playState: PlayState.Landscape })
+    if (this.playerRef.current) {
+      this.playerRef.current.fadeTransition(this.state.currentCar.landscape())
     }
   }
 

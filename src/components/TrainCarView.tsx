@@ -2,6 +2,7 @@ import * as React from 'react'
 import { TrainCar } from '../train';
 import Arrow, { ArrowDirection } from './Arrow';
 import SpeechBubble from './SpeechBubble';
+import EyeView from './EyeView'
 
 import * as _ from 'lodash'
 
@@ -11,6 +12,7 @@ interface Props {
   moveForward?: any
   moveBackward?: any
   speechBubble?: any
+  viewWindow?: any
 }
 
 export default class TrainCarView extends React.Component<Props> {
@@ -26,10 +28,17 @@ export default class TrainCarView extends React.Component<Props> {
       return <SpeechBubble key={`bubble-${i}`} onClick={this.speechBubble} position={positions.shift()!} />
     })
 
+    const window = (this.props.car.eye() ?
+      <EyeView onClick={this.viewWindow} position={this.props.car.eye()!} />
+      : undefined
+    )
+
+
     return <div>
       {forwardArrow}
       {backwardArrow}
       {bubbles}
+      {window}
     </div>
   }
 
@@ -48,6 +57,12 @@ export default class TrainCarView extends React.Component<Props> {
   speechBubble = () => {
     if (this.props.speechBubble) {
       this.props.speechBubble()
+    }
+  }
+
+  viewWindow = () => {
+    if (this.props.viewWindow) {
+      this.props.viewWindow()
     }
   }
 }

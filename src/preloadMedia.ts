@@ -3,6 +3,7 @@ import { Media, UIPosition } from "./data";
 export interface CacheEntry {
   name: string
   bubbles: UIPosition[] | void
+  eye: UIPosition | void
   dialog: string | void
   video: string | void
   videoType: string
@@ -31,6 +32,7 @@ export default function preloadMedia(media: Media[], skipPreload: boolean = fals
       dialog: `dialog/${m.name}.mp3`,
       name: m.name,
       bubbles: m.bubbles,
+      eye: m.eye,
       video: `cinemagraphs/${m.name}.${videoExtension}`,
       videoType
     }
@@ -61,6 +63,7 @@ export default function preloadMedia(media: Media[], skipPreload: boolean = fals
         dialog: results[0],
         name: source.name,
         bubbles: source.bubbles,
+        eye: source.eye,
         video: results[1],
         videoType: source.videoType
       }
