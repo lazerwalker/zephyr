@@ -99,7 +99,7 @@ class App extends Component<{}, State> {
   }
 
   playAudio(human: Human, state: PlayState) {
-    if (this.currentBuffer) {
+    if (this.currentBuffer && this.ctx.state != "suspended") {
       this.currentBuffer.stop()
     }
 
@@ -134,6 +134,10 @@ class App extends Component<{}, State> {
       srcNode.connect(this.ctx.destination);    // create output
       srcNode.start();
       this.currentBuffer = srcNode                    // play...
+      this.currentBuffer.onended = () => {
+        delete this.currentBuffer
+      }
+
     }
   }
 
@@ -196,7 +200,7 @@ class App extends Component<{}, State> {
       <div className="App">
         <div className="video-wrapper">
           <InventoryView item={this.state.item} />
-          <ScoreView score={this.state.score} total={this.train.cars.length} />
+          <ScoreView score={this.state.score} total={this.train.cars.length} constant={this.state.constant} />
           <Cinemagraph
             media={this.cache[media.name]}
             ref={this.playerRef}

@@ -2,11 +2,11 @@ import { Item, Trade } from './train'
 import _ from 'lodash';
 
 export default class Language {
-  uppercaseConsonants = "ÇÐÑĆϾҊҨϿӜĈĊČĎϢĐϨĜĞĠĢĤĦĴĶĹŅŇĻŔŘŜŞŠŴŤŹŽŻŦŢŚŖĿĽŃ§ƁƆƇƉƊƤƑƓƘƜƝƔƦƧƩƪƬƮƲƵ".split("")
-  lowercaseConsonants = "ðÞñćĉќѝċčгдҩďӝﬠאּđĝğġϣģϩĥħĵķĺþĸņňŋļľŀłńŕŗřśŝŵźżžşšţťŧƿƄƅƈƌſƗƒƃƍƕƙƚƛƞƥƨƫƭ".split("")
+  uppercaseConsonants = "ÇÐÑĆϾҊҨϿӜĈĊČĎϢĐϨĜĞĠĢĤĦĴĶĹŅŇĻŔŘŜŞŠŴŤŹŽŻŦŢŚŖĿĽŃ§ƁƆƇƉƊƤƑƓƘƜƝƔƦƧƪƬƮƲƵ".split("")
+  lowercaseConsonants = "ðÞñćĉќѝċčгдҩďӝﬠאּđĝğġϣģϩĥħĵķĺþĸņňŋļľŀłńŕŗřśŝŵźżžşšţťŧƿƄƅƈƌſƗƒƃƍƙƚƛƞƥƨƫƭ".split("")
 
   uppercaseVowels = "ÁÂÃÄÅÆÈÉÊËÌÍÎÏÒϘÓѦÔÕÖÙĮÚÛÜÝĂĄĒĔĖĘĚĨĪĬİ¥ŎŒŨŪŬŰŲŮŶŸŐŌƂƋƎƖƟƏƐƠƢƯƱƳ".split("")
-  lowercaseVowels = "àáâãäåæçèéêўзëìеѧįәíфϙîïòóҽôõöùúûüýÿāăąēĕėęěĩīĭıōŏőœũūŭůűųŷơƣưƴ".split("")
+  lowercaseVowels = "àáâãäåæçèéêўзëìеįәíфϙîïòóҽôõöùúûüýÿāăąēĕėęěĩīĭıōŏőœũūŭůűųŷơƣưƴ".split("")
 
   npcGreeting: string
   menuGreeting: string
@@ -22,25 +22,30 @@ export default class Language {
 
   items: Item[] = []
 
-  palette = [
-    "#ff0000",
-    "#00ff00",
-    "#0000ff",
-    "#ff00ff",
-    "#ffff00",
-    "#00ffff",
-    "#aa00aa",
-    "#c046a3",
-    "#99ab2f",
-    "#00fa11",
-    "#afafaf",
-    "#12ff87",
-    "#182598",
-    "#19aaff"
+  masterPalette = [
+    "#E6918E",
+    "#52A69F",
+    "#453939",
+
+    "#7E2553",
+    "#1D2B53",
+    "#83769C",
+    "#FF004D",
+    "#C2C3C7",
+    "#AB5236",
+    "#008751",
+
+    "#E0C351",
   ]
+
+  palette: string[] = []
 
   item(): Item {
     const word = this.itemWord();
+
+    if (this.palette.length === 0) {
+      this.palette = _.shuffle(this.masterPalette)
+    }
     const color = this.palette.shift()!
 
     const item = {name: word, color}
@@ -80,7 +85,7 @@ export default class Language {
     const askWords = _.sample([2, 2, 3, 3, 3, 3, 4, 4])!
     this.menuAskBase = _.shuffle(this.sentence(askWords).concat(["<strong style='color: #color#;'>#item#</strong>"])).join(" ") + "."
 
-    this.palette = _.shuffle(this.palette)
+    this.palette = _.shuffle(this.masterPalette)
   }
 
   menuTrade(item: Item) {

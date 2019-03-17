@@ -4,6 +4,7 @@ import { Item } from '../train'
 interface Props {
   score: number
   total: number
+  constant: number
 }
 
 export default class ScoreView extends React.Component<Props> {
@@ -22,7 +23,7 @@ export default class ScoreView extends React.Component<Props> {
       <div className='score-wrapper'>
         <div className='score'>
           <div className='header'>ｐｌｅａｓｅｄ</div>
-          <div className='score-box'>{this.convertNumber(this.props.score)} / {this.convertNumber(this.props.total)}</div>
+          <div className='score-box'>{this.convertNumber(this.props.score + this.props.constant)} / {this.convertNumber(this.props.total + this.props.constant)}</div>
         </div></div>
     )
   }
