@@ -65,11 +65,11 @@ class App extends Component<{}, State> {
     console.log(language.items)
 
     this.state = {
-      currentCar: this.train.cars[0],
+      currentCar: this.train.cars[1],
       playState: PlayState.Car,
       loaded: false,
       loadingProgress: 0,
-      item: _.sample(language.items)!,
+      item: this.train.cars[1].front!.human.desiredTrade.wants,
       language: language,
       score: 0,
       constant: _.random(2, 7)

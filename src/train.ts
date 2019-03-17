@@ -67,9 +67,6 @@ export class Train {
     }
 
     const cycle = this.generateTradeCycle(language)
-    const backupCycle = this.generateTradeCycle(language)
-    cycle.concat(backupCycle.slice(0, 2))
-
     var cars: TrainCar[] = []
 
     const humans = _.groupBy(_.shuffle(people), _.property("room"))
