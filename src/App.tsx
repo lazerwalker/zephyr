@@ -168,7 +168,7 @@ class App extends Component<{}, State> {
       return <MainMenu
         subtitle={this.state.language.gamePitch()}
         startText={this.state.language.gamePitch()}
-        media={this.cache["Ben-wave"]}
+        media={this.cache["room"]}
         onStart={this.exitConversation} />
     } else if (this.state.playState === PlayState.Win) {
       return <WinView

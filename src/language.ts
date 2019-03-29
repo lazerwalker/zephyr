@@ -90,7 +90,7 @@ export default class Language {
   }
 
   subtitle() {
-    const numberOfWords = _.sample([4, 4, 5, 6])!
+    const numberOfWords = 4
     let result = []
 
     for (let i = 0; i < numberOfWords; i++) {

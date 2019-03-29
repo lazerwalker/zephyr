@@ -112,8 +112,16 @@ a {
   height: 100vh;
 }
 
-#menu p {
+#short-credits {
+  background-color: #E9E5DF;
+  bottom: 25%;
+  float: right;
+  opacity: 0.9;
+  padding-right: 30px;
+  position: absolute;
+  right: 0;
   text-align: right;
+  width: 50vw;
 }
 
 #menu h1 {

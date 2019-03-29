@@ -16,6 +16,9 @@ export interface UIPosition {
 
 let data: Media[] = [
   {
+    name: "room"
+  },
+  {
     name: "observation-table1",
     bubbles: [
       { x: "65%", y: "21%" },
