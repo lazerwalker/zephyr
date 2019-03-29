@@ -7,8 +7,10 @@ import Levels from './data'
 import TrainCarView from './components/TrainCarView';
 import { Item, Train, TrainCar } from './train';
 import { Human } from './Human';
+import MainMenu from './components/MainMenu'
 import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
+import WinView from './components/WinView';
 import AngryView from './components/AngryView';
 import PointView from './components/PointView';
 import InventoryView from './components/InventoryView'
@@ -22,7 +24,8 @@ import Language from './language';
 import _ from 'lodash';
 
 enum PlayState {
-  NotStarted = 0,
+  MainMenu = 0,
+  Win,
   Car,
   Landscape,
   TalkingWave,
@@ -69,7 +72,7 @@ class App extends Component<{}, State> {
 
     this.state = {
       currentCar: this.train.cars[1],
-      playState: PlayState.Car,
+      playState: PlayState.MainMenu,
       loaded: false,
       loadingProgress: 0,
       item: this.train.cars[1].front!.human.desiredTrade.wants,
@@ -161,6 +164,20 @@ class App extends Component<{}, State> {
     let customView;
     let media;
 
+    if (this.state.playState === PlayState.MainMenu) {
+      return <MainMenu
+        subtitle={this.state.language.gamePitch()}
+        startText={this.state.language.gamePitch()}
+        media={this.cache["Ben-wave"]}
+        onStart={this.exitConversation} />
+    } else if (this.state.playState === PlayState.Win) {
+      return <WinView
+        subtitle={this.state.language.subtitle()}
+        startText={this.state.language.greetings()}
+        media={this.cache["Ben-wave"]}
+        onStart={this.reset} />
+    }
+
     if (this.state.playState === PlayState.Car) {
       media = this.state.currentCar.media()
       customView = <TrainCarView
@@ -246,6 +263,7 @@ class App extends Component<{}, State> {
     if (this.state.currentHuman.desiredTrade.wants === this.state.item) {
       const result = this.state.currentHuman.trade()
       if (result) {
+        const newScore = this.state.score + 1
         this.playAudio(this.state.currentHuman!, PlayState.TalkingHappy)
         this.setState({ item: result, playState: PlayState.TalkingHappy, score: this.state.score + 1 })
         if (this.playerRef.current) {
@@ -365,8 +383,27 @@ class App extends Component<{}, State> {
     console.log("Is complete!")
   }
 
+  reset = () => {
+    let language = new Language()
+    this.train = Train.generate(language)
+
+    this.state = {
+      currentCar: this.train.cars[1],
+      playState: PlayState.MainMenu,
+      loaded: false,
+      loadingProgress: 0,
+      item: this.train.cars[1].front!.human.desiredTrade.wants,
+      language: language,
+      score: 0,
+      constant: _.random(2, 7)
+    }
+  }
+
   exitConversation = () => {
-    // TODO: This will change!
+    if (this.state.playState === PlayState.TalkingHappy && this.state.score >= this.train.cars.length) {
+      this.setState({ playState: PlayState.Win })
+    }
+
     this.setState({ playState: PlayState.Car })
     if (this.currentBuffer) {
       this.currentBuffer.stop()

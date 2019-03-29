@@ -203,7 +203,35 @@ export const people: PersonRoom[] = [
   {
     name: "Sergio",
     room: CarType.ObservationTable
-  }
+  },
+  {
+    name: "Sergio",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Robbie",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Jake",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Alan",
+    room: CarType.ObservationTable
+  },
+  {
+    name: "Tyler",
+    room: CarType.Sleeper
+  },
+  {
+    name: "Jordan",
+    room: CarType.ObservationLookout
+  },
+  {
+    name: "Leene",
+    room: CarType.ObservationLookout
+  },
 ]
 
 export const emotes = [

@@ -1,5 +1,6 @@
 import { Item, Trade } from './train'
 import _ from 'lodash';
+import { number } from 'prop-types';
 
 export default class Language {
   uppercaseConsonants = "ÇÐÑĆϾҊҨϿӜĈĊČĎϢĐϨĜĞĠĢĤĦĴĶĹŅŇĻŔŘŜŞŠŴŤŹŽŻŦŢŚŖĿĽŃ§ƁƆƇƉƊƤƑƓƘƜƝƔƦƧƪƬƮƲƵ".split("")
@@ -48,7 +49,7 @@ export default class Language {
     }
     const color = this.palette.shift()!
 
-    const item = {name: word, color}
+    const item = { name: word, color }
 
     this.items.push(item)
     console.log(item)
@@ -88,6 +89,17 @@ export default class Language {
     this.palette = _.shuffle(this.masterPalette)
   }
 
+  subtitle() {
+    const numberOfWords = _.sample([4, 4, 5, 6])!
+    let result = []
+
+    for (let i = 0; i < numberOfWords; i++) {
+      result.push(this.word(_.sample([2, 3, 3, 3, 4, 4, 5, 6, 7])!, true))
+    }
+
+    return result.join(" ")
+  }
+
   menuTrade(item: Item) {
     return this.menuTradeBase
       .replace("#item#", item.name)
@@ -104,6 +116,13 @@ export default class Language {
     const numberOfWords = _.sample([1, 1, 2, 2, 2, 3, 3])!
     return this.sentence(numberOfWords).join(" ")
   }
+
+  gamePitch(): string {
+    const numberOfWords = _.sample([5, 6])!
+    let sentence = this.sentence(numberOfWords)
+    return sentence.join(" ")
+  }
+
 
   tradeDeclaration(trade: Trade): string {
     const numberOfWords = _.sample([5, 6])!
