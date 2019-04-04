@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
+class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +32,7 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         webView.uiDelegate = self
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = false
+        webView.scrollView.delegate = self
 
         view = webView
 
@@ -60,6 +61,10 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         if navigationAction.targetFrame == nil {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
+        return nil
+    }
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return nil
     }
 }
