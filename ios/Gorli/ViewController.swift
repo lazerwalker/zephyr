@@ -38,6 +38,15 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UISc
 
         let url = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "build")!
         webView.loadFileURL(url, allowingReadAccessTo: url)
+
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) {_ in
+            webView.evaluateJavaScript("var evt = new Event('appPause'); window.dispatchEvent(evt);", completionHandler: nil)
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: nil) {_ in
+            webView.evaluateJavaScript("var evt = new Event('appResume'); window.dispatchEvent(evt);", completionHandler: nil)
+        }
+
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

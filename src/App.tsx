@@ -89,6 +89,21 @@ class App extends Component<{}, State> {
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
     window.addEventListener('resize', resizeViewport)
+
+    window.addEventListener('appPause', () => {
+      var audioEls = document.getElementsByTagName('audio');
+      for (var i = 0, len = audioEls.length; i < len; i++) {
+        audioEls[i].pause()
+      }
+    })
+
+    window.addEventListener('appResume', () => {
+      var audioEls = document.getElementsByTagName('audio');
+      for (var i = 0, len = audioEls.length; i < len; i++) {
+        audioEls[i].play()
+      }
+    })
+
     resizeViewport()
 
     console.log("isWKWebView: ", (window as any).skipPreload)
