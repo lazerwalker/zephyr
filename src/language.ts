@@ -142,7 +142,7 @@ export default class Language {
 
     let second = this.sentence(numberOfWords)
     let winIndex = _.random(1, second.length - 1)
-    second[winIndex] = " ｗｉｎ "
+    second[winIndex] = " ＷＩＮ "
 
     return `${this.greetings()}! ${second.join(" ")}!`
   }
