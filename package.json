@@ -21,7 +21,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "convert-mp4": "rm -rf public/cinemagraphs/*.mp4; for i in ../video/*.mov; do f=`basename \"$i\" .mov`; ffmpeg -i \"$i\" -an \"public/cinemagraphs/$f.mp4\" -map_metadata -1 -qscale 0; done",
+    "convert-mp4": "rm -rf public/cinemagraphs/*.mp4; for i in ../video/*.mov; do f=`basename \"$i\" .mov`; ffmpeg -i \"$i\" -c:v libx264 -crf 28 -an \"public/cinemagraphs/$f.mp4\" -map_metadata -1 -qscale 0; done",
     "convert-webm": "rm -rf public/cinemagraphs/*.webm; for i in ../video/*.mov; do f=`basename \"$i\" .mov`; ffmpeg -i \"$i\" -an \"public/cinemagraphs/$f.webm\" -map_metadata -1 -f webm -c:v libvpx -b:v 1M -hide_banner; done",
     "convert": "yarn convert-mp4 && yarn convert-webm"
   },
