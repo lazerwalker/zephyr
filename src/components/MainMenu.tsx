@@ -5,6 +5,7 @@ import Button from './Button';
 
 interface Props {
   onStart: (() => void)
+  onCredits: (() => void)
   media: CacheEntry
   subtitle: string
   startText: string
@@ -21,7 +22,7 @@ export default (props: Props) => {
           by <a href="https://lazerwalker.com" target="_blank">@lazerwalker</a></p>
         <p>music by <a href="https://twitter.com/maizewallin">maize wallin</a><br />
           sound by <a href="#" target="_blank">ali cedroni</a><br />
-          acting by <a href="#" target="_blank">others</a>
+          acting by <a href="#" onClick={props.onCredits}>others</a>
         </p>
       </div>
       <Button onClick={props.onStart}>

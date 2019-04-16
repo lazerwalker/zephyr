@@ -8,6 +8,7 @@ import TrainCarView from './components/TrainCarView';
 import { Item, Train, TrainCar } from './train';
 import { Human } from './Human';
 import MainMenu from './components/MainMenu'
+import CreditView from './components/CreditView'
 import WaveView from './components/WaveView';
 import MenuView from './components/MenuView';
 import WinView from './components/WinView';
@@ -25,6 +26,7 @@ import _ from 'lodash';
 
 enum PlayState {
   MainMenu = 0,
+  Credits,
   Car,
   Landscape,
   TalkingWave,
@@ -186,7 +188,10 @@ class App extends Component<{}, State> {
         subtitle={this.state.language.gamePitch()}
         startText={this.state.language.gamePitch()}
         media={this.cache["room"]}
-        onStart={this.exitConversation} />
+        onStart={this.exitConversation}
+        onCredits={this.showCredits} />
+    } else if (this.state.playState === PlayState.Credits) {
+      return <CreditView onExit={this.reset} />
     }
 
     if (this.state.playState === PlayState.Car) {
@@ -403,17 +408,15 @@ class App extends Component<{}, State> {
     let language = new Language()
     this.train = Train.generate(language)
 
-    this.state = {
+    this.setState({
       currentCar: this.train.cars[1],
       playState: PlayState.MainMenu,
-      loaded: false,
-      loadingProgress: 0,
       item: this.train.cars[1].front!.human.desiredTrade.wants,
       language: language,
       score: 0,
       constant: _.random(2, 7),
       won: false
-    }
+    })
   }
 
   exitConversation = () => {
@@ -432,6 +435,10 @@ class App extends Component<{}, State> {
     if (this.playerRef.current) {
       this.playerRef.current.fadeTransition(this.state.currentHuman!.neutral())
     }
+  }
+
+  showCredits = () => {
+    this.setState({ playState: PlayState.Credits })
   }
 }
 

@@ -266,6 +266,20 @@ button.ask, button.trade.no-ask {
   margin: auto;
 }
 
+.credits {
+  margin: 10px;
+}
+
+.credits ul {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+}
+
+.credits ul {
+  list-style: none;
+}
+
 /** iPhone non-Max 7/8 and SE */
 @media (max-width: 400px) {
   .inventory .header, .score .header {
