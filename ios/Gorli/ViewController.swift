@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import SafariServices
 import WebKit
 
-class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIScrollViewDelegate {
+class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UIScrollViewDelegate, SFSafariViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,29 @@ class ViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, UISc
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return nil
+    }
+
+    // Open links in SFSafariViewContrller
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url else {
+            return decisionHandler(.allow)
+        }
+
+        if navigationAction.navigationType == .linkActivated {
+            let safariVC = SFSafariViewController(url: url)
+            safariVC.delegate = self
+
+            self.present(safariVC, animated: true, completion: nil)
+
+            decisionHandler(.cancel)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+
+
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }
 
