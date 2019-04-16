@@ -92,7 +92,6 @@ export class Train {
     const humans = _.groupBy(_.shuffle(people), _.property("room"))
 
     let lastType: CarType | undefined
-    let usedSoundRoom = false
 
     while (cycle.length > 0) {
       let type: CarType

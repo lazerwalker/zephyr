@@ -137,6 +137,16 @@ export default class Language {
     return sentence.join(" ") + "."
   }
 
+  won(): string {
+    const numberOfWords = _.sample([4, 5, 6])!
+
+    let second = this.sentence(numberOfWords)
+    let winIndex = _.random(1, second.length - 1)
+    second[winIndex] = " ｗｉｎ "
+
+    return `${this.greetings()}! ${second.join(" ")}!`
+  }
+
   thanks(): string {
     // TODO: Put in item.
     const numberOfWords = _.sample([4, 5, 6])!

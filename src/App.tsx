@@ -25,7 +25,6 @@ import _ from 'lodash';
 
 enum PlayState {
   MainMenu = 0,
-  Win,
   Car,
   Landscape,
   TalkingWave,
@@ -49,6 +48,8 @@ interface State {
   constant: number
 
   language: Language
+
+  won: boolean
 }
 
 export const LanguageContext = React.createContext(new Language())
@@ -78,7 +79,8 @@ class App extends Component<{}, State> {
       item: this.train.cars[1].front!.human.desiredTrade.wants,
       language: language,
       score: 0,
-      constant: _.random(2, 7)
+      constant: _.random(2, 7),
+      won: false
     }
   }
 
@@ -185,12 +187,6 @@ class App extends Component<{}, State> {
         startText={this.state.language.gamePitch()}
         media={this.cache["room"]}
         onStart={this.exitConversation} />
-    } else if (this.state.playState === PlayState.Win) {
-      return <WinView
-        subtitle={this.state.language.subtitle()}
-        startText={this.state.language.greetings()}
-        media={this.cache["Ben-wave"]}
-        onStart={this.reset} />
     }
 
     if (this.state.playState === PlayState.Car) {
@@ -238,7 +234,7 @@ class App extends Component<{}, State> {
       <div className="App">
         <div className="video-wrapper">
           <BackgroundMusic />
-          <InventoryView item={this.state.item} />
+          <InventoryView item={this.state.item} won={this.state.won} />
           <ScoreView score={this.state.score} total={this.train.cars.length} constant={this.state.constant} />
           <Cinemagraph
             media={this.cache[media.name]}
@@ -283,6 +279,11 @@ class App extends Component<{}, State> {
         this.setState({ item: result, playState: PlayState.TalkingHappy, score: this.state.score + 1 })
         if (this.playerRef.current) {
           this.playerRef.current.fadeTransition(this.state.currentHuman.happy())
+        }
+
+        if (this.state.score + 1 >= this.train.cars.length) {
+          this.setState({ won: true })
+          alert(this.state.language.won())
         }
       }
     } else {
@@ -410,15 +411,12 @@ class App extends Component<{}, State> {
       item: this.train.cars[1].front!.human.desiredTrade.wants,
       language: language,
       score: 0,
-      constant: _.random(2, 7)
+      constant: _.random(2, 7),
+      won: false
     }
   }
 
   exitConversation = () => {
-    if (this.state.playState === PlayState.TalkingHappy && this.state.score >= this.train.cars.length) {
-      this.setState({ playState: PlayState.Win })
-    }
-
     this.setState({ playState: PlayState.Car })
     if (this.currentBuffer) {
       this.currentBuffer.stop()
