@@ -19,7 +19,7 @@ export default (props: Props) => {
       <div id='short-credits'>
         <p>made on <a href="https://itch.io/jam/trainjam2019/" target="_blank">trainjam 2019</a><br />
           by <a href="https://lazerwalker.com" target="_blank">@lazerwalker</a></p>
-        <p>music by <a href="https://twitter.com/mdwallin">maize wallin</a><br />
+        <p>music by <a href="https://twitter.com/maizewallin">maize wallin</a><br />
           sound by <a href="#" target="_blank">ali cedroni</a><br />
           acting by <a href="#" target="_blank">others</a>
         </p>
