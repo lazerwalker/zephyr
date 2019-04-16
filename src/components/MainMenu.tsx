@@ -14,7 +14,7 @@ export default (props: Props) => {
   return <div>
     <Cinemagraph media={props.media} silent />
     <div id='menu'>
-      <h1>ｔｒａｉｎ２</h1>
+      <h1>ｚｅｐｈｙｒ</h1>
       <div className='subtitle'>{props.subtitle}</div>
       <div id='short-credits'>
         <p>made on <a href="https://itch.io/jam/trainjam2019/" target="_blank">trainjam 2019</a><br />
