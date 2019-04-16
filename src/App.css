@@ -241,13 +241,6 @@ button.ask, button.trade.no-ask {
 
 }
 
-.inventory .header, {
-  background-color: #E9E5DF;
-  font-size: 12px;
-  margin-bottom: 4px;
-  margin-top: 4px;
-}
-
 .inventory .item-box {
   width: 100px;
   margin: auto;
@@ -271,4 +264,54 @@ button.ask, button.trade.no-ask {
 .score-box {
   min-width: 70px;
   margin: auto;
+}
+
+/** iPhone non-Max 7/8 and SE */
+@media (max-width: 400px) {
+  .inventory .header, .score .header {
+    font-size: 14px;
+  }
+
+  .score {
+    right: 10px;
+  }
+
+  .item-box, .score-box {
+    font-size: 14px;
+    padding: 6px;
+    width: 100px;
+  }
+
+  #menu button {
+    margin-left: 10px;
+  }  
+}
+
+@media (max-height: 670px) {
+  #short-credits {
+    bottom: 35%;
+  }
+}
+
+/** iPhone SE */
+@media (max-width: 350px) {
+  .inventory {
+    margin-left: 0;
+    left: 0;
+  }
+
+  .item-box, .score-box {
+    font-size: 14px;
+    padding: 6px;
+    width: 100px;
+  }
+
+  #menu button {
+    left: 0;
+  }
+
+  button {
+    margin-left: -150px;
+    width: 300px;
+  }
 }
