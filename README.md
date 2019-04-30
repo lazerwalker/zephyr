@@ -1,44 +1,51 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# ｚｅｐｈｙｒ
 
-## Available Scripts
+<a href="https://lzrwlkr.me/zephyr"><img src="appstore.png" alt="Download on the iOS App Store"></a>
 
-In the project directory, you can run:
+<video autoPlay loop muted playsInline>
+  <source src="readme.mp4" type="video/mp4" />
+  <source src="readme.webm" type="video/webm" />
+</video>
 
-### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+ｚｅｐｈｙｒ is a about the joy of exploring and getting lost in incomprehensible systems. The game's goal, and the written language it uses, are procedurally generated for each playthrough.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+It was made in (more or less) 52 hours on [Train Jam 2019](http://trainjam.com). All game art is processed FMV (full-motion video) captured on the train. Sound design by [Ali Cedroni](https://twitter.com/AliCedroni), music by [Maize Wallin](https://twitter.com/MaizeWallin). A list of actors can be found in `src/components/CreditView.tsx`
 
-### `npm test`
+This repository contains the whole game! This means a few things:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**The game itself** is a React app written in TypeScript, managed via [create-react-app](https://www.github.com/facebook/create-react-app). All game source lives in `/src`
 
-### `npm run build`
+**The iOS app** is a Swift app that renders a locally-stored copy of the game bundle within a full-screen web view, with some boilerplate to handle things like properly wiring up audio to native APIs. It's sort of a minimalist home-rolled version of something like [PhoneGap](https://phonegap.com).
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**The Android app** doesn't really exist yet, but the `/android` folder contains some WIP jamming on an Android web view wrapper that mimics the iOS app's functionality.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Web App
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+As mentioned, the bulk of the game is built in React and TypeScript, via create-react-app.
 
-### `npm run eject`
+After cloning this repo, run `yarn install`. From there, `yarn start` will spin up a local server that live-compiles and updates the app. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`yarn build` generates a production-ready copy of the game within the `public` folder.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**As a warning**: This game was made on a 52-hour game jam on a train. Other than help with audio and music, I made it entirely myself, which meant spending most of those 52 hours capturing and processing video footage. So the codebase is a bit of a mess, cobbled together on top of the bones of a [previous jam game](https://github.com/lazerwalker/gorli) made under similar time constrants. 
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The majority of logic lives in App.tsx, with a few other procedural generation systems split out into their own files (train.ts, language.ts, etc). There's also a lot of fiddliness with components that trigger audio and video, since figuring out more stateless React-y ways to trigger rich media content was a bit of a problem without Internet access.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Which is to say: feel free to study and learn from this repo, but I'm not going to stake my reputation on it being the cleanest code I've ever written :)
 
-## Learn More
+## Video processing
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+In my local copy of this repo, I have a sibling folder that contains my raw unedited video files. `yarn convert` takes those and recompresses them into webm files and smaller mp4s. Webm files are in general smaller / more easily compressible, but aren't supported in Safari; as a native app, this project exclusively uses the mp4 copies of the videos, but the webm conversion is left in as an artifact from a [previous project](https://github.com/lazerwalker/gorli) that targetted desktop web as well.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## iOS App
+
+If you run `yarn build` to generate a production copy of the web app, and then build the `TrainJam.xcodeproj` Xcode project within the `ios` folder, it'll automatically pull in that latest production build. Future improvements might include triggering a web build as part of the Xcode build step.
+
+I use Fastlane to deploy this to Apple and to manage iTunes Connect metadata. `fastlane ios release` ships the latest version to Apple. The screenshots were manually created; I'd love to hear it if you have good suggestions for how to do automated UI testing / screenshot-taking when the UI elements are within an embedded WKWebView.
+
+## Licensing
+
+All of the source code in this repo is licensed under the MIT license. See the LICENSE file for more details.
+
+All of the media content (in the `public/audio` and `public/cinemagraphs` folders) currently have no license; you do not have the right to use them. This will change; I plan to either make them available under some form of Creative Commons license, or they will be removed from this repository.
