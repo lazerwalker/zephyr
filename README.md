@@ -1,9 +1,10 @@
 # ｚｅｐｈｙｒ
 
 
-<a href="readme.mp4"><img src="readme.gif" /></a>
-
 <a href="https://lzrwlkr.me/zephyr"><img style="width: 200px" src="appstore.png" alt="Download on the iOS App Store"></a>
+
+<a href="readme.mp4"><img src="readme.gif" style="max-height: 500px;"/></a>
+
 
 ｚｅｐｈｙｒ is a about the joy of exploring and getting lost in incomprehensible systems. The game's goal, and the written language it uses, are procedurally generated for each playthrough.
 
