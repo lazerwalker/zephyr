@@ -43,6 +43,6 @@ I use Fastlane to deploy this to Apple and to manage iTunes Connect metadata. `f
 
 ## Licensing
 
-All of the source code in this repo is licensed under the MIT license. See the LICENSE file for more details.
+All of the media content (in the `public/audio` and `public/cinemagraphs` folders) is licensed under Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). More information is available at https://creativecommons.org/licenses/by-nc/4.0/.
 
-All of the media content (in the `public/audio` and `public/cinemagraphs` folders) currently have no license; you do not have the right to use them. This will change; I plan to either make them available under some form of Creative Commons license, or they will be removed from this repository.
+All of the source code (read: everything else) is licensed under the MIT license. See the LICENSE file in this repo for more information.
